@@ -1,0 +1,22 @@
+{
+  "name": "@tape/server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --env-file-if-exists=../.env src/index.ts",
+    "dev:fake": "tsx watch --env-file-if-exists=../.env src/index.ts --fake",
+    "start": "tsx --env-file-if-exists=../.env src/index.ts",
+    "probe": "tsx src/probe.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/ws": "^8.5.13",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
