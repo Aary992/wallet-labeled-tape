@@ -1,6 +1,9 @@
 # Codex prompts
 
 Paste one prompt per Codex task, in order. Each one is self-contained. Prompt 1 blocks the others.
+Codex also reads `AGENTS.md` on its own: it logs its files in `AI_USAGE.md`, moves its finished
+rows in `TASKS.md` to Done (Who = Codex), and never touches the "Not built by AI" section.
+Task IDs: prompt 1 = T20, prompt 2 = T23, prompt 3 = T26, prompt 4 = T25, T28, T29, T30.
 
 ## Prompt 1: account scorer
 

@@ -1,33 +1,33 @@
 # AI usage
 
-ETHGlobal asks every team to document where and how AI tools were used, down to files. This file
-is that record. Update it whenever AI writes or changes a file.
+ETHGlobal asks every team to document where and how AI tools were used, down to specific files.
+This file is that record. Every file an AI tool writes or changes gets a row in the file log, in
+the same commit as the change. Who did each task is in `TASKS.md`.
 
 ## Tools
 
 | Tool | Used for |
 |:-|:-|
-| Claude (claude.ai, Claude Code) | PRD drafting and review, repo setup, scaffolding listed below |
-| Codex | Planned for backend modules listed in `docs/CODEX_PROMPTS.md` (not used yet) |
-
-## What the humans did
-
-The idea, the product decisions and the PRD's rules (which tags exist, the thresholds, the honest
-scope wording, the forward-test design) were set by the team. AI turned those decisions into the
-scaffold below. Everything from here on is logged per file.
+| Claude Code | Repo setup, code, docs and fixes listed in the file log |
+| Codex | Not used yet. Planned for the backend tasks in `docs/CODEX_PROMPTS.md` |
 
 ## File log
 
-| Date (IST) | Files | Tool | What AI did | Human part |
-|:-|:-|:-|:-|:-|
-| 2026-11-06 02:50 | `docs/PRD.md` | Claude | Copied the team's PRD doc to markdown | PRD content written and decided by the team |
-| 2026-11-06 02:50 | `package.json`, `server/package.json`, `web/package.json`, configs, `.gitignore`, `LICENSE` | Claude | Generated the monorepo scaffold | Chose the stack (Node, SQLite, Vite + React) |
-| 2026-11-06 02:55 | `shared/protocol.ts`, `server/src/config.ts` | Claude | Typed the wire protocol; moved every PRD threshold into one config file | Thresholds come from the PRD |
-| 2026-11-06 02:55 | `server/src/hl/*`, `server/src/relay.ts`, `server/src/db.ts`, `server/src/index.ts`, `server/src/accounts.ts`, `server/src/fake.ts`, `server/src/probe.ts`, `server/src/scoring/queue.ts` | Claude | Generated the trade stream, reconnect, weight budget, REST client, SQLite schema, relay, fake feed, API probe and priority queue | Architecture and limits from the PRD |
-| 2026-11-06 03:00 | `web/src/*` | Claude | Generated the first tape UI: top bar, filters, tape, drawer shell, footer note | Layout and copy from the PRD's UI section |
-| 2026-11-06 03:00 | `README.md`, `CONTEXT.md`, `docs/CODEX_PROMPTS.md`, `.github/workflows/ci.yml` | Claude | Wrote docs and CI | |
+| When (IST) | Tool | Files | What the AI did |
+|:-|:-|:-|:-|
+| Fri 11-06 02:53 | Claude Code | `docs/PRD.md` | Converted the PRD doc to markdown, content unchanged |
+| Fri 11-06 02:53 | Claude Code | `package.json`, `package-lock.json`, `server/package.json`, `web/package.json`, `server/tsconfig.json`, `web/tsconfig.json`, `web/vite.config.ts`, `.gitignore`, `.nvmrc`, `.env.example`, `LICENSE`, `.github/workflows/ci.yml`, `.claude/launch.json` | Generated the monorepo scaffold and CI |
+| Fri 11-06 02:53 | Claude Code | `shared/protocol.ts` | Wrote the wire protocol types shared by backend and browser |
+| Fri 11-06 02:53 | Claude Code | `server/src/config.ts` | Moved every PRD threshold into one config file |
+| Fri 11-06 02:53 | Claude Code | `server/src/hl/stream.ts`, `server/src/hl/types.ts`, `server/src/hl/budget.ts`, `server/src/hl/info.ts` | Trade stream with reconnect and ping, Hyperliquid wire types, weight token bucket, REST client |
+| Fri 11-06 02:53 | Claude Code | `server/src/db.ts`, `server/src/relay.ts`, `server/src/accounts.ts`, `server/src/index.ts`, `server/src/fake.ts`, `server/src/probe.ts`, `server/src/scoring/queue.ts`, `server/src/scoring/README.md` | SQLite schema, browser relay, account book, entry point, fake feed, API probe, scoring queue |
+| Fri 11-06 02:53 | Claude Code | `web/index.html`, `web/src/App.tsx`, `web/src/useTape.ts`, `web/src/styles.css`, `web/src/main.tsx`, `web/src/vite-env.d.ts` | First tape UI: top bar, filters, tape, account drawer shell, footer note |
+| Fri 11-06 02:53 | Claude Code | `README.md`, `CONTEXT.md`, `AI_USAGE.md`, `docs/CODEX_PROMPTS.md` | Project docs and the Codex prompts |
+| Fri 11-06 03:04 | Claude Code | `AI_USAGE.md`, `TASKS.md`, `docs/CODEX_PROMPTS.md` | Reorganized this log; wrote the task list of who did what |
+| Fri 11-06 03:04 | Claude Code | `scripts/setup.mjs`, `package.json`, `CLAUDE.md`, `AGENTS.md`, `.gitattributes`, `.claude/launch.json`, `README.md`, `CONTEXT.md` | One-command setup for a second machine, context files for Claude and Codex, line-ending rules |
+| Fri 11-06 03:04 | Claude Code | `server/src/relay.ts` | Clear error when the relay port is already taken |
+| Fri 11-06 03:04 | Claude Code | `server/src/relay.ts`, `web/src/useTape.ts` | Tape sorted newest first by exchange time (coins arrive on separate streams) |
 
-## Not AI
+## Not built by AI
 
-Add rows here for work the team writes by hand. Judges look for meaningful human contribution:
-ETHGlobal says projects built entirely by AI may not be eligible for partner prizes or finalist.
+<!-- Written by Aarit. AI tools never write or edit this section. -->
