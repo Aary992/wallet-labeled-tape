@@ -23,6 +23,19 @@ export class Relay {
     });
 
     this.wss = new WebSocketServer({ server: http, path: "/ws" });
+    // ws re-emits the http server's errors on the WebSocketServer, so both need a handler.
+    const onError = (err: NodeJS.ErrnoException) => {
+      if (err.code === "EADDRINUSE") {
+        console.error(
+          `[relay] Port ${config.port} is already taken. Another copy of the backend is probably ` +
+            `running (close that terminal or preview), or set RELAY_PORT to a free port.`,
+        );
+        process.exit(1);
+      }
+      throw err;
+    };
+    http.on("error", onError);
+    this.wss.on("error", onError);
     this.wss.on("connection", (socket) => {
       this.send(socket, { type: "hello", status: this.getStatus(), backlog: this.backlog });
     });
@@ -34,7 +47,10 @@ export class Relay {
 
   pushTrades(rows: TapeRow[]): void {
     if (rows.length === 0) return;
-    this.backlog = [...rows, ...this.backlog].slice(0, config.storage.tapeBacklogRows);
+    // Newest first by exchange time: coins arrive on separate streams, so arrival order is not time order.
+    this.backlog = [...rows, ...this.backlog]
+      .sort((a, b) => b.time - a.time)
+      .slice(0, config.storage.tapeBacklogRows);
     this.broadcast({ type: "trades", rows });
   }
 

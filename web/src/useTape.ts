@@ -14,6 +14,11 @@ export interface TapeState {
   relayUp: boolean;
 }
 
+/** Newest on top by exchange time. Coins arrive on separate streams, so arrival order is not time order. */
+function newestFirst(rows: TapeRow[]): TapeRow[] {
+  return [...rows].sort((a, b) => b.time - a.time).slice(0, MAX_ROWS);
+}
+
 export function useTape(): TapeState {
   const [state, setState] = useState<TapeState>({ rows: [], status: null, flow: [], relayUp: false });
   const pending = useRef<TapeRow[]>([]);
@@ -29,7 +34,7 @@ export function useTape(): TapeState {
       const incoming = pending.current;
       pending.current = [];
       if (incoming.length === 0) return;
-      setState((s) => ({ ...s, rows: [...incoming.reverse(), ...s.rows].slice(0, MAX_ROWS) }));
+      setState((s) => ({ ...s, rows: newestFirst([...incoming, ...s.rows]) }));
     };
 
     const connect = () => {
@@ -43,10 +48,9 @@ export function useTape(): TapeState {
         const msg = JSON.parse(ev.data as string) as ServerMessage;
         switch (msg.type) {
           case "hello":
-            setState((s) => ({ ...s, status: msg.status, rows: msg.backlog.slice(0, MAX_ROWS) }));
+            setState((s) => ({ ...s, status: msg.status, rows: newestFirst(msg.backlog) }));
             break;
           case "trades":
-            // Rows inside one message are oldest first; the tape shows newest on top.
             pending.current.push(...msg.rows);
             if (frame.current === null) frame.current = requestAnimationFrame(flush);
             break;
