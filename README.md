@@ -18,8 +18,13 @@ this, so this product cannot be built on Binance-style data.
 Needs Node 22.13 or newer. No API keys, no accounts, ₹0.
 
 ```bash
-npm install
+git clone https://github.com/Aary992/wallet-labeled-tape.git
+cd wallet-labeled-tape
+npm run setup
 ```
+
+`npm run setup` checks Node, installs packages and checks the Hyperliquid API. It also adds a
+preview entry for Claude Code; skip that with `npm run setup -- --no-claude`.
 
 ```bash
 npm run dev
@@ -51,7 +56,10 @@ npm run probe
 | `server/src/db.ts` | SQLite schema: accounts, positions, trades (48h), cohorts |
 | `web/src/` | Vite + React tape UI |
 | `docs/PRD.md` | The product spec |
+| `TASKS.md` | Every task, who did it and what is next |
 | `AI_USAGE.md` | Where and how AI tools were used (ETHGlobal requirement) |
+| `CONTEXT.md`, `CLAUDE.md`, `AGENTS.md` | Working rules for the team and its AI tools |
+| `scripts/setup.mjs` | The `npm run setup` script |
 
 ## Status
 

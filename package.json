@@ -12,7 +12,8 @@
     "node": ">=22.13"
   },
   "scripts": {
-    "dev": "concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "setup": "node scripts/setup.mjs",
+    "dev":"concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
     "dev:fake": "concurrently -n server,web -c cyan,magenta \"npm:dev:server:fake\" \"npm:dev:web\"",
     "dev:server": "npm run dev -w server",
     "dev:server:fake": "npm run dev:fake -w server",
