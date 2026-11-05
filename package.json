@@ -1,0 +1,27 @@
+{
+  "name": "wallet-labeled-tape",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Live Hyperliquid trade tape that shows which account is on each side of a trade and what the trade did to its position.",
+  "license": "MIT",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:fake": "concurrently -n server,web -c cyan,magenta \"npm:dev:server:fake\" \"npm:dev:web\"",
+    "dev:server": "npm run dev -w server",
+    "dev:server:fake": "npm run dev:fake -w server",
+    "dev:web": "npm run dev -w web",
+    "probe": "npm run probe -w server",
+    "typecheck": "npm run typecheck -w server && npm run typecheck -w web",
+    "build": "npm run build -w web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

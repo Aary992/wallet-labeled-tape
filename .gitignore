@@ -1,0 +1,16 @@
+node_modules/
+dist/
+*.log
+.env
+.env.*
+!.env.example
+
+# local SQLite data (pre-seeded files are shared by hand, not committed)
+**/data/*.db
+**/data/*.db-*
+**/data/replays/*.jsonl
+
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
