@@ -4,7 +4,7 @@
 import { useEffect, useState } from "react";
 import type { AccountDetail } from "../../shared/protocol.ts";
 
-const RELAY_WS = import.meta.env.VITE_RELAY_URL ?? "ws://localhost:8787/ws";
+import { RELAY_URL as RELAY_WS } from "./relayUrl.ts";
 export const RELAY_HTTP = RELAY_WS.replace(/^ws/, "http").replace(/\/ws$/, "");
 
 type Remote<T> =

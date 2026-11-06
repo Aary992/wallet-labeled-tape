@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { FlowSnapshot, ServerMessage, StatusSnapshot, TapeRow } from "../../shared/protocol.ts";
 
-const RELAY_URL = import.meta.env.VITE_RELAY_URL ?? "ws://localhost:8787/ws";
+import { RELAY_URL } from "./relayUrl.ts";
 const MAX_ROWS = 400;
 
 export interface TapeState {
