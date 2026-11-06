@@ -16,4 +16,8 @@ Instructions for Codex and any other coding agent working in this repo.
    description. Claude adds those rows to the logs right after Aarit merges.
 5. Thresholds only in `server/src/config.ts`. Every REST call goes through `InfoClient`, which
    charges `WeightBudget`. No new runtime dependencies unless the prompt allows it.
-6. Open a PR and never merge it yourself.
+6. Work in your own git worktree on a new branch cut from the latest `origin/main`
+   (`git fetch origin` then `git worktree add <your scratch folder> -b codex/<task> origin/main`).
+   Never switch branches in `C:UsersAaruDocumentswallet-labeled-tape` or any folder you did
+   not create: another Codex task and Claude work on this machine at the same time.
+7. Open a PR and never merge it yourself.

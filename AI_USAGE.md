@@ -38,6 +38,7 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 16:10 | Codex | `server/src/scoring/positions.ts`, `server/src/scoring/positions.test.ts` | X02 (PR #1, merged 16:28): position action classifier (open, add, reduce, close, flip), positions from fills, PositionBook with reconcile flags, and tests |
 | Fri 11-06 16:12 | Codex | `server/src/scoring/roundtrips.ts`, `server/src/scoring/roundtrips.test.ts`, `server/src/scoring/metrics.ts`, `server/src/scoring/metrics.test.ts`, `server/src/scoring/tags.ts`, `server/src/scoring/tags.test.ts`, `.github/workflows/ci.yml` | X01 (PR #2, merged 16:28): round-trip rebuild per coin, every account metric, tag rules from config, boundary tests, `npm test` in CI |
 | Fri 11-06 16:30 | Claude Code | `AI_USAGE.md`, `TASKS.md`, `CONTEXT.md`, `docs/DEMO.md`, `docs/PRIZES.md` | Merged X01 and X02 into main after Aarit approved (54 tests, CI green); logged Codex's files; corrected earlier log times that had been estimated instead of taken from the commits |
+| Fri 11-06 16:33 | Claude Code | `AGENTS.md`, `docs/CODEX_PROMPTS.md`, `AI_USAGE.md` | Round 2 prep: every Codex task works in its own git worktree from the latest main (two local tasks in one folder would overwrite each other); X05 sorts fills oldest first before scoring |
 
 ## Not built by AI
 

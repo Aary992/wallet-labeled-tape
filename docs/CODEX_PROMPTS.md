@@ -4,7 +4,9 @@ Aarit pastes these into Codex, one Codex task per prompt, **two at a time**. The
 round own different files, so their pull requests do not conflict. Start a round only when the
 round before it is merged. Claude reviews every PR; Aarit merges it.
 
-Codex never edits `TASKS.md`, `AI_USAGE.md` or `CONTEXT.md`: two PRs editing the same log
+Each task works in its own git worktree on a branch cut from the latest `origin/main` (see
+`AGENTS.md` rule 6), never in the shared `Documentswallet-labeled-tape` folder: two tasks in one
+folder would overwrite each other. Codex never edits `TASKS.md`, `AI_USAGE.md` or `CONTEXT.md`: two PRs editing the same log
 lines would conflict. Codex lists every file it changed in the PR description instead, and Claude
 adds those rows to the logs right after the merge. Codex keeps `npm run typecheck`,
 `npm run build` and `npm test` green, opens a PR and never merges it.
@@ -26,7 +28,8 @@ Interfaces are already pinned: `shared/protocol.ts` (`AccountMetrics`, `AccountD
 ## Round 1, prompt X01: scoring math
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and the "Wallet
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and the "Wallet
 labeling rules" section of docs/PRD.md first. Your task is X01 in TASKS.md.
 
 Files you own (change nothing else; if something else needs a change, say so in the PR):
@@ -66,7 +69,8 @@ description instead. Open a PR; do not merge it.
 ## Round 1, prompt X02: position tracker logic
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and "Step 5" in
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and "Step 5" in
 docs/PRD.md first. Your task is X02 in TASKS.md.
 
 Files you own (change nothing else): server/src/scoring/positions.ts and positions.test.ts.
@@ -92,7 +96,8 @@ description instead. Open a PR; do not merge it.
 ## Round 2, prompt X03: flow and forward-test math
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
 test"), and in docs/PRD.md feature F4 and "Validation". Your task is X03 in TASKS.md.
 
 Files you own (change nothing else): server/src/scoring/flow.ts, forward-test.ts and their
@@ -127,7 +132,8 @@ description instead. Open a PR; do not merge it.
 ## Round 4, prompt X04: replay (venue WiFi fallback)
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md and docs/ARCHITECTURE.md ("Demo night")
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md and docs/ARCHITECTURE.md ("Demo night")
 first. Your task is X04 in TASKS.md.
 
 Files you own (change nothing else): server/src/hl/replay.ts, server/src/scripts/
@@ -152,7 +158,8 @@ description instead. Open a PR; do not merge it.
 ## Round 2, prompt X05: scorer loop, account API, freeze, pre-seed
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
 one account", "The forward test", "Storage") and "Rate limits" in docs/PRD.md first. X01 and X02
 are merged. Your task is X05 in TASKS.md.
 
@@ -166,7 +173,8 @@ server/src/hl/info.ts, server/src/fake.ts.
 2. scorer.ts: a loop that pops ScoreQueue (sleep config.scorer.idlePollMs when empty) and pages
    InfoClient.userFillsByTime over the last config.scoring.windowDays, newest pages first, up
    to config.fills.maxReachable. Early stop per config.scorer.earlyStopMinSpanHours (see
-   ARCHITECTURE.md). Then buildRoundTrips, computeMetrics, assignTags (X01), seed a PositionBook
+   ARCHITECTURE.md). Sort the fills oldest first (by time, then tid) before buildRoundTrips,
+   computeMetrics and assignTags (X01), which expect oldest first. Seed a PositionBook
    (X02) from the fills, write the account (add a metrics_json column; migrate an existing DB
    with ALTER TABLE if the column is missing), call AccountBook.setTags. Retry failures up to
    config.scorer.maxRetries, then leave the account Pending. Re-queue expired accounts at low
@@ -196,7 +204,8 @@ description instead. Open a PR; do not merge it.
 ## Round 3, prompt X06: live positions, reconcile, flow broadcast
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
 one trade") and "Reconnect and backfill" in docs/PRD.md first. X03 and X05 are merged. Your
 task is X06 in TASKS.md.
 
@@ -223,7 +232,8 @@ description instead. Open a PR; do not merge it.
 ## Round 3, prompt X07: forward-test runner and API
 
 ```
-Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
+Repo: wallet-labeled-tape. Work in your own git worktree on a new
+branch cut from the latest origin/main (AGENTS.md rule 6). Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
 test") and "Validation" in docs/PRD.md first. X03 and X05 are merged. Your task is X07 in TASKS.md.
 
 Files you own: server/src/scripts/forward-test.ts, server/src/scoring/forward-test-store.ts,
