@@ -27,6 +27,9 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 03:04 | Claude Code | `scripts/setup.mjs`, `package.json`, `CLAUDE.md`, `AGENTS.md`, `.gitattributes`, `.claude/launch.json`, `README.md`, `CONTEXT.md` | One-command setup for a second machine, context files for Claude and Codex, line-ending rules |
 | Fri 11-06 03:04 | Claude Code | `server/src/relay.ts` | Clear error when the relay port is already taken |
 | Fri 11-06 03:04 | Claude Code | `server/src/relay.ts`, `web/src/useTape.ts` | Tape sorted newest first by exchange time (coins arrive on separate streams) |
+| Fri 11-06 16:05 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `package.json`, `server/package.json` | Pinned the interfaces Codex builds against: new config sections (scorer, positions, replay, cohorts), API types for account detail and the forward test, npm script names |
+| Fri 11-06 16:05 | Claude Code | `docs/ARCHITECTURE.md`, `docs/CODEX_PROMPTS.md` | Wrote the infrastructure design and the forward-test design; rewrote the Codex prompts as 3 parallel waves with file ownership |
+| Fri 11-06 16:05 | Claude Code | `TASKS.md`, `CONTEXT.md`, `AGENTS.md`, `README.md`, `server/src/scoring/README.md`, `AI_USAGE.md` | Rebuilt the task list as a 5-track tracker plus one checksheet each for Aarit, Codex and Claude; updated the context files to match |
 
 ## Not built by AI
 

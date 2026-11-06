@@ -83,8 +83,46 @@ export const config = {
     reconcileEveryMs: 60 * 60 * 1000,
   },
 
+  /** Scorer loop (X05). */
+  scorer: {
+    /** Wait this long before checking an empty queue again. */
+    idlePollMs: 1_000,
+    /**
+     * Early stop: if the newest 2,000 fills span less than this, the 10,000-fill cap cannot reach
+     * minCoverageDays, so the account is scored from that one page (Insufficient history) and the
+     * other 4 pages (about 480 weight) are saved. Mostly bots and market makers.
+     */
+    earlyStopMinSpanHours: 24,
+    /** Failed fetches before an account is given up on; it stays Pending. */
+    maxRetries: 3,
+  },
+
+  /** Position tracking (X02, X06). */
+  positions: {
+    /** Sizes this close to 0 (coin units) count as flat, to absorb float error. */
+    zeroEpsilon: 1e-9,
+    /** Write in-memory positions to SQLite this often (and on shutdown). */
+    persistEveryMs: 30_000,
+    /** After a stream gap, refetch fills for accounts seen in this many recent minutes. */
+    gapRefetchRecentMinutes: 15,
+  },
+
   flow: {
     windowMinutes: 15,
+    broadcastEveryMs: 5_000,
+  },
+
+  /** Venue WiFi fallback (X04). Recordings go to data/replays (never in git). */
+  replay: {
+    dir: "data/replays",
+    recordSeconds: 120,
+  },
+
+  /** Frozen cohorts are written here and committed, so the freeze time is public (X05, A10). */
+  cohorts: {
+    dir: "../cohorts",
+    /** npm run freeze refuses below this many scored accounts unless --force. */
+    minScoredAccounts: 50,
   },
 
   storage: {
@@ -97,6 +135,8 @@ export const config = {
     horizonsMinutes: [15, 60, 240],
     /** Confirm the current taker fee tier for a fresh account. */
     takerFeeBps: 4.5,
+    /** A price counts for a target time if a trade of that coin happened within this window after it. */
+    priceMatchWindowSeconds: 60,
   },
 } as const;
 

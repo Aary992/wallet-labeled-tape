@@ -1,99 +1,236 @@
 # Codex prompts
 
-Paste one prompt per Codex task, in order. Each one is self-contained. Prompt 1 blocks the others.
-Codex also reads `AGENTS.md` on its own: it logs its files in `AI_USAGE.md`, moves its finished
-rows in `TASKS.md` to Done (Who = Codex), and never touches the "Not built by AI" section.
-Task IDs: prompt 1 = T20, prompt 2 = T23, prompt 3 = T26, prompt 4 = T25, T28, T29, T30.
+Aarit pastes these into Codex, one Codex task per prompt. **Prompts in the same wave run at the
+same time**: each owns different files, so their pull requests do not conflict. Start a wave only
+when the wave before it is merged. Claude reviews every PR; Aarit merges it.
 
-## Prompt 1: account scorer
+Every prompt also binds Codex to `AGENTS.md`: log files in `AI_USAGE.md` (Tool = Codex), move its
+row in `TASKS.md` to Done (Who = Codex, time in IST), update CURRENT STATE in `CONTEXT.md`, keep
+`npm run typecheck`, `npm run build` and `npm test` green, open a PR and never merge it.
 
-```
-Repo: wallet-labeled-tape. Read CONTEXT.md and docs/PRD.md ("Wallet labeling rules" and
-"Rate limits") first.
+Interfaces are already pinned: `shared/protocol.ts` (`AccountMetrics`, `AccountDetail`,
+`ForwardTestReport`), `server/src/config.ts` (every threshold, including `scorer`, `positions`,
+`replay`, `cohorts`) and the npm script names in both `package.json` files. Use them as they are.
 
-Build the account scorer in server/src/scoring/:
+| Wave | Prompt | Task | Needs |
+|:-|:-|:-|:-|
+| 1 | Scoring math | X01 | |
+| 1 | Position tracker logic | X02 | |
+| 1 | Flow and forward-test math | X03 | |
+| 1 | Replay | X04 | |
+| 2 | Scorer loop, account API, freeze, pre-seed | X05 | X01, X02 merged |
+| 3 | Live positions, reconcile, flow broadcast | X06 | X03, X05 merged |
+| 3 | Forward-test runner and API | X07 | X03, X05 merged |
 
-1. roundtrips.ts: given one account's fills (HlFill from server/src/hl/types.ts, oldest first),
-   rebuild round-trip positions per coin. Track signed position from startPosition plus signed
-   size (side "B" = +sz, "A" = -sz). A round trip starts when the position leaves 0 and ends when
-   it returns to 0 or flips sign; a flip closes one trip and opens the next. Trip PnL = sum of
-   closedPnl minus fee minus builderFee. Record open time, close time, max notional.
-2. metrics.ts: from round trips and fills compute net PnL, return on volume (net PnL / traded
-   notional), profit factor (gross win / gross loss), max drawdown (% of peak cumulative PnL),
-   weeks positive (% of active weeks with positive PnL), closed positions, maker share (share of
-   fills with crossed === false), fills per day, median hold seconds, median position notional,
-   coverage start and coverage days (capped at config.scoring.windowDays).
-3. tags.ts: map metrics to AccountTags (shared/protocol.ts) using ONLY config.scoring values:
-   history pending / insufficient / partial / full, perf profitable / unprofitable / mixed,
-   size large, activity automated / market_maker.
-4. scorer.ts: a loop that pops ScoreQueue (queue.ts), pages InfoClient.userFillsByTime backwards
-   or forwards over the last 30 days (max 2,000 per call, stop at 10,000 fills), computes metrics
-   and tags, writes the accounts table (server/src/db.ts) and calls AccountBook.setTags. Re-queue
-   expired accounts at low priority per config.freshness. Never exceed WeightBudget.
-5. Wire scorer.ts into server/src/index.ts so tags appear on the live tape.
-6. Add GET /api/account/:address to server/src/relay.ts returning the stored row.
-
-Tests: node:test files next to each module (roundtrips.test.ts etc.) with hand-made fills
-covering open, add, partial close, full close, flip, and the 10,000 fill cap. Add an
-"npm test" script to server/package.json using "tsx --test".
-
-Constraints: no new runtime dependencies. Thresholds only from config.ts. Keep npm run
-typecheck green. Update CONTEXT.md CURRENT STATE and AI_USAGE.md (file log) at the end.
-Open a PR; do not merge it.
-```
-
-## Prompt 2: positions and per-trade actions
+## Wave 1, prompt X01: scoring math
 
 ```
-Repo: wallet-labeled-tape. Read CONTEXT.md and docs/PRD.md (Step 5, "Reconnect and backfill").
-Requires the scorer from prompt 1.
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and the "Wallet
+labeling rules" section of docs/PRD.md first. Your task is X01 in TASKS.md.
 
-Build server/src/scoring/positions.ts: keep the current signed position per (address, coin) for
-scored accounts, seeded from the last fetched fill (startPosition + its signed size). On each live
-trade classify the action from position before and after: open (0 to non-zero), add (same sign,
-larger), reduce (same sign, smaller), close (to 0), flip (sign changes). Replace
-AccountBook.actionFor in server/src/accounts.ts with this. Persist to the positions table.
+Files you own (change nothing else; if something else needs a change, say so in the PR):
+server/src/scoring/roundtrips.ts, metrics.ts, tags.ts, their .test.ts files, and
+.github/workflows/ci.yml.
 
-Reconcile: once per config.freshness.reconcileEveryMs, call InfoClient.clearinghouseState for
-active-cohort accounts and overwrite drifted positions. On the stream "gap" event in index.ts,
-mark positions needs_reconcile and refetch recent fills for affected accounts.
+Pure functions only: no network, no database, no imports from index.ts.
 
-Tests with node:test for every action and for flip-through-zero. No new dependencies. Update
-CONTEXT.md and AI_USAGE.md. Open a PR; do not merge it.
+1. roundtrips.ts: buildRoundTrips(fills: HlFill[]) => RoundTrip[] (export the type). Fills are
+   one account's, oldest first, any coins. Per coin, track the signed position from the first
+   fill's startPosition plus signed size (side "B" = +sz, "A" = -sz); |x| < config.positions.
+   zeroEpsilon counts as 0. A trip starts when the position leaves 0 and ends when it returns to
+   0 or flips sign; a flip closes one trip and opens the next. If the first fill has a non-zero
+   startPosition, that trip began before the history: keep it and mark truncated: true.
+   RoundTrip: coin, openTime, closeTime (null while open), pnlUsd (sum of closedPnl minus fee
+   minus builderFee; fee can be negative, a maker rebate, subtract it as is; builderFee may be
+   missing), maxNotionalUsd, fillCount, truncated.
+2. metrics.ts: computeMetrics(fills, trips, now) => AccountMetrics (shared/protocol.ts, every
+   field, follow the doc comments there exactly). Only closed trips count toward netPnlUsd,
+   profitFactor, maxDrawdownPct, weeksPositivePct and closedPositions. Hold time = closeTime minus
+   openTime. flatShare uses config.scoring.marketMaker.flatNotionalUsd. coverageStart = oldest
+   fill time; coverageDays capped at config.scoring.windowDays. hitFillCap = fill count reached
+   config.fills.maxReachable.
+3. tags.ts: assignTags(m: AccountMetrics | null) => AccountTags using ONLY config.scoring values.
+   null => PENDING_TAGS. history: insufficient (under minClosedPositions or under
+   minCoverageDays: perf null), partial (under fullCoverageDays), else full. perf: profitable,
+   unprofitable, else mixed. size: large. activity: market_maker takes precedence over automated.
+4. Tests (node:test, next to each module) with hand-made fills: open, add, partial close, full
+   close, flip in one fill, truncated first trip, negative fee, missing builderFee, the 10,000
+   cap, every tag boundary on both sides.
+5. ci.yml: add "npm test" after typecheck.
+
+Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
 ```
 
-## Prompt 3: Profitable Account Flow (F4)
+## Wave 1, prompt X02: position tracker logic
 
 ```
-Repo: wallet-labeled-tape. Read docs/PRD.md feature F4. Requires prompts 1 and 2.
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and "Step 5" in
+docs/PRD.md first. Your task is X02 in TASKS.md.
 
-Build server/src/scoring/flow.ts: over a rolling config.flow.windowMinutes per coin, count
-accounts tagged profitable (excluding activity market_maker) whose net long exposure rose vs
-fell. Each account counts once, by the sign of its net change over the window, so both sides of
-one trade never double-count and one whale counts as one. coveragePct = share of observed
-notional in the window from scored accounts. Broadcast {type:"flow"} (FlowSnapshot in
-shared/protocol.ts) every 5 s from index.ts. Tests with node:test. Update CONTEXT.md and
-AI_USAGE.md. Open a PR; do not merge it.
+Files you own (change nothing else): server/src/scoring/positions.ts and positions.test.ts.
+Do not wire it into index.ts or accounts.ts; X06 does that.
+
+1. classifyAction(before: number, after: number) => PositionAction: open (0 to non-zero), add
+   (same sign, larger), reduce (same sign, smaller, not 0), close (to 0), flip (sign changes,
+   including straight through 0 in one trade). |x| < config.positions.zeroEpsilon counts as 0.
+2. positionsFromFills(fills: HlFill[]) => Map<coin, number>: the size after each coin's last
+   fill (startPosition plus its signed size; "B" = +sz, "A" = -sz).
+3. class PositionBook: seed(address, coin, size, at); seedFromFills(address, fills, at);
+   apply(address, coin, signedDelta, at) => PositionAction, which returns "unknown" and stores
+   nothing for an account that was never seeded; get(address, coin); overwrite(address, coin,
+   size, at) for reconcile; markNeedsReconcile(addresses?: string[]); isSeeded(address);
+   entries() for persistence (address, coin, size, updatedAt, needsReconcile).
+4. Tests (node:test) for every action, flip through zero, float dust near 0, unknown for
+   unseeded, overwrite clearing needsReconcile.
+
+Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
 ```
 
-## Prompt 4: forward test, pre-seed, replay
+## Wave 1, prompt X03: flow and forward-test math
 
 ```
-Repo: wallet-labeled-tape. Read docs/PRD.md "Validation" and "Risks". Requires prompt 1.
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
+test"), and in docs/PRD.md feature F4 and "Validation". Your task is X03 in TASKS.md.
 
-1. server/src/scripts/freeze-cohort.ts: write the current perf tags of all scored accounts to
-   the cohorts table with one cohort_id and frozen_at = now, using only data before now.
-2. server/src/scoring/forward-test.ts: after T0, for every open or add by a cohort account record
-   mid price at +config.forwardTest.copyDelaySeconds, then at each horizonsMinutes. Report hit
-   rate and average return after a round-trip taker fee per horizon and per group: profitable
-   cohort, unprofitable cohort, a random size-matched cohort, all flow. Expose it at
-   GET /api/forward-test.
-3. server/src/scripts/preseed.ts: walk the busiest accounts seen in the trades table and score
-   them within the weight budget, so the demo starts warm.
-4. server/src/scripts/record-replay.ts and a --replay <file> flag in index.ts: record 2 minutes
-   of raw trades messages to data/replays/*.jsonl and play them back through the same pipeline
-   (venue WiFi fallback).
+Files you own (change nothing else): server/src/scoring/flow.ts, forward-test.ts and their
+.test.ts files. Pure logic: no network, no database, not wired into index.ts (X06 and X07 do).
 
-Add npm scripts for each. No new dependencies. Update CONTEXT.md and AI_USAGE.md. Open a PR;
-do not merge it.
+1. flow.ts: class FlowTracker.
+   record({ time, coin, address, signedNotionalUsd, sizeUsd, scored, profitable }) for each side
+   of each trade (profitable = perf "profitable" and activity not "market_maker").
+   snapshot(now) => FlowSnapshot[] per coin over config.flow.windowMinutes: raised / cut =
+   profitable accounts whose summed signed notional over the window is above / below 0, each
+   account counted once. coveragePct = sizeUsd of scored sides / sizeUsd of all sides x 100.
+   Drop events older than the window.
+2. forward-test.ts:
+   a. signalsFromFills(address, fills, t0) => Signal[]: fills after t0 that opened, added or
+      flipped (use startPosition and signed size, not only dir), one signal per (coin, oid), at
+      the first fill's time, direction long or short.
+   b. measure(signals by group, priceAt(coin, time) => number | null) => ForwardTestResult[]
+      (shared/protocol.ts) for every group and every config.forwardTest.horizonsMinutes. Entry =
+      price at signal time + copyDelaySeconds, exit = entry time + horizon. Return in bps, negated
+      for shorts, minus 2 x takerFeeBps. Hit = return after fee above 0. Skip a signal when either
+      price is null and count only measured ones.
+   c. pickRandomCohort(candidates, matchTo, seed) => addresses: size-matched (median position
+      notional within the same quartile) and activity-matched, deterministic for a given seed.
+3. Tests (node:test): one account on both sides never double-counts, a whale counts once,
+   coverage math, window expiry, adds vs reduces in signals, one signal per oid, short returns,
+   fee subtraction, null prices skipped, random cohort is deterministic.
+
+Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
+```
+
+## Wave 1, prompt X04: replay (venue WiFi fallback)
+
+```
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md and docs/ARCHITECTURE.md ("Demo night")
+first. Your task is X04 in TASKS.md.
+
+Files you own (change nothing else): server/src/hl/replay.ts, server/src/scripts/
+record-replay.ts, and in server/src/index.ts only the line that picks the stream.
+
+1. record-replay.ts (npm run replay:record): connect with TradeStream for config.coins, write
+   every trades batch as one JSON line {at, trades} to config.replay.dir/<ISO time>.jsonl for
+   config.replay.recordSeconds (override with --seconds N), then exit with a summary line.
+2. replay.ts: class ReplayStream with the same events as TradeStream (TradeStreamEvents). Plays
+   a file at real speed in a loop; on each loop shifts trade times so they stay newest and tids
+   stay unique. "latest" means the newest file in config.replay.dir; print a clear message and
+   exit 1 if there is none.
+3. index.ts: --replay <file|latest> picks ReplayStream; status mode stays "live" but log
+   "[tape] REPLAY of <file>". Touch nothing else in index.ts; X05 edits it next.
+4. Windows-safe: no POSIX-only syntax, file names without colons.
+
+Done when npm run typecheck and npm run build pass and a 10 s recording plays back in
+npm run dev:replay. Open a PR; do not merge it.
+```
+
+## Wave 2, prompt X05: scorer loop, account API, freeze, pre-seed
+
+```
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
+one account", "The forward test", "Storage") and "Rate limits" in docs/PRD.md first. X01 and X02
+are merged. Your task is X05 in TASKS.md.
+
+Files you own: server/src/scoring/scorer.ts (+ test), server/src/scripts/freeze-cohort.ts,
+server/src/scripts/preseed.ts, server/src/db.ts, server/src/relay.ts, server/src/index.ts,
+server/src/hl/info.ts, server/src/fake.ts.
+
+1. info.ts: after each userFillsByTime response, charge the extra weight
+   (config.budget.userFillsWeightPer20Items per 20 fills returned) to WeightBudget. On 429, back
+   off 10 s and retry once.
+2. scorer.ts: a loop that pops ScoreQueue (sleep config.scorer.idlePollMs when empty) and pages
+   InfoClient.userFillsByTime over the last config.scoring.windowDays, newest pages first, up
+   to config.fills.maxReachable. Early stop per config.scorer.earlyStopMinSpanHours (see
+   ARCHITECTURE.md). Then buildRoundTrips, computeMetrics, assignTags (X01), seed a PositionBook
+   (X02) from the fills, write the account (add a metrics_json column; migrate an existing DB
+   with ALTER TABLE if the column is missing), call AccountBook.setTags. Retry failures up to
+   config.scorer.maxRetries, then leave the account Pending. Re-queue expired accounts at low
+   priority per config.freshness with an incremental fetch from last_fill_time. On start, load
+   every unexpired scored account from the DB into AccountBook so a restart is not cold.
+3. index.ts: start the scorer (not in fake mode). Expose the PositionBook instance for X06 but do
+   not change how actions are computed yet.
+4. relay.ts: GET /api/account/:address => AccountDetail (shared/protocol.ts), 404 for an address
+   never seen. In fake mode return believable fake metrics so the UI can be built offline.
+5. freeze-cohort.ts (npm run freeze): insert every scored account's perf tag into cohorts with
+   one cohort_id (ISO minute) and frozen_at = now; write cohorts/<id>.json at the repo root
+   (config.cohorts.dir, relative to server/) with address, tags, metrics and scored_at per
+   account; print the file path, the account counts per perf tag and the sha256 of the file.
+   Refuse to run with fewer than config.cohorts.minScoredAccounts scored accounts unless
+   --force.
+6. preseed.ts (npm run preseed): score the busiest addresses in the trades table (by notional,
+   last 48 h) within the weight budget, printing progress; safe to run while npm run dev runs.
+7. Tests: scorer with a fake InfoClient covering paging, early stop, the 10,000 cap, retries.
+
+Done when npm test, npm run typecheck and npm run build pass, and a live run shows accounts
+moving from Pending to tags within 2 minutes. Open a PR; do not merge it.
+```
+
+## Wave 3, prompt X06: live positions, reconcile, flow broadcast
+
+```
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
+one trade") and "Reconnect and backfill" in docs/PRD.md first. X03 and X05 are merged. Your
+task is X06 in TASKS.md.
+
+Files you own: server/src/accounts.ts, server/src/index.ts, server/src/scoring/reconcile.ts
+(+ test). Do not touch relay.ts (X07 is editing it at the same time).
+
+1. Replace AccountBook.actionFor with the PositionBook from X05: each trade side calls apply()
+   with its signed size (buyer +sz, seller -sz). Persist positions to the positions table every
+   config.positions.persistEveryMs and on shutdown.
+2. reconcile.ts: every config.freshness.reconcileEveryMs, call InfoClient.clearinghouseState for
+   scored accounts traded in the last hour (within the weight budget) and overwrite drifted
+   positions; log how many drifted.
+3. On the stream "gap" event: mark positions needs_reconcile, set connection to "reconciling",
+   refetch fills since the gap for accounts seen in the last
+   config.positions.gapRefetchRecentMinutes, then back to "live".
+4. Feed FlowTracker (X03) from every trade side and broadcast {type:"flow"} every
+   config.flow.broadcastEveryMs.
+
+Done when npm test, npm run typecheck and npm run build pass and a live run shows open, add,
+reduce, close and flip on the tape and flow messages every 5 s. Open a PR; do not merge it.
+```
+
+## Wave 3, prompt X07: forward-test runner and API
+
+```
+Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
+test") and "Validation" in docs/PRD.md first. X03 and X05 are merged. Your task is X07 in TASKS.md.
+
+Files you own: server/src/scripts/forward-test.ts, server/src/scoring/forward-test-store.ts,
+and in server/src/relay.ts only the new route. Do not touch index.ts or accounts.ts (X06 is
+editing them at the same time). Put your SQL in forward-test-store.ts, not db.ts.
+
+1. forward-test.ts (npm run forward-test): load the latest cohort (or --cohort <id>), check the
+   sha256 of cohorts/<id>.json matches what is in the DB, fetch each cohort account's fills after
+   frozen_at through InfoClient, build signals and measure them with X03, using prices from the
+   trades table (nearest trade at or after the target time, same coin, within
+   config.forwardTest.priceMatchWindowSeconds; else null).
+   Groups: profitable, unprofitable, random (pickRandomCohort, seed = cohort_id), all (every
+   scored account). Exclude market makers. Store the ForwardTestReport and print it as a table
+   ready to paste into the README.
+2. relay.ts: GET /api/forward-test returns the latest stored ForwardTestReport, 404 before any.
+
+Done when npm test, npm run typecheck and npm run build pass and the script prints a report on a
+DB with a frozen cohort. Open a PR; do not merge it.
 ```

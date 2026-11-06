@@ -70,6 +70,71 @@ export interface FlowSnapshot {
   coveragePct: number;
 }
 
+/** Scoring output for one account (X01 computes it, X05 stores it, the drawer shows it). */
+export interface AccountMetrics {
+  /** Sum of closed round-trip PnL after fee and builderFee, USD. */
+  netPnlUsd: number;
+  tradedNotionalUsd: number;
+  /** netPnlUsd / tradedNotionalUsd. */
+  returnOnVolume: number;
+  /** Gross win / gross loss. 999 when there are wins and no losses, null with no closed trips. */
+  profitFactor: number | null;
+  /** Largest fall in cumulative PnL from a peak, % of that peak. 100 if it never rose above 0. */
+  maxDrawdownPct: number;
+  weeksPositivePct: number;
+  closedPositions: number;
+  /** Share of fills with crossed === false, 0 to 1. */
+  makerShare: number;
+  fillsPerDay: number;
+  medianHoldSeconds: number | null;
+  medianPositionNotionalUsd: number | null;
+  /** Share of covered time with |position| under config flatNotionalUsd, 0 to 1. */
+  flatShare: number;
+  fillCount: number;
+  /** True when the 10,000 reachable fills ran out before the 30 day window did. */
+  hitFillCap: boolean;
+  coverageStart: number;
+  coverageDays: number;
+}
+
+/** GET /api/account/:address */
+export interface AccountDetail {
+  address: string;
+  tags: AccountTags;
+  /** Null until scored. */
+  metrics: AccountMetrics | null;
+  firstObservedAt: number | null;
+  scoredAt: number | null;
+  positions: Array<{ coin: string; size: number; needsReconcile: boolean }>;
+  /** Last 20 tape rows this account was on either side of, newest first. */
+  recentTrades: TapeRow[];
+  explorerUrl: string;
+}
+
+export type ForwardTestGroup = "profitable" | "unprofitable" | "random" | "all";
+
+export interface ForwardTestResult {
+  group: ForwardTestGroup;
+  horizonMinutes: number;
+  signals: number;
+  /** Share of signals with a positive return after delay and fees, 0 to 100. Null with 0 signals. */
+  hitRatePct: number | null;
+  /** Average return after delay and fees, basis points. */
+  avgReturnBps: number | null;
+}
+
+/** GET /api/forward-test. 404 until a cohort is frozen. */
+export interface ForwardTestReport {
+  cohortId: string;
+  frozenAt: number;
+  /** sha256 of the committed cohort file: proves the cohort was not edited after T0. */
+  cohortSha256: string;
+  measuredUntil: number;
+  copyDelaySeconds: number;
+  roundTripFeeBps: number;
+  results: ForwardTestResult[];
+}
+
 export type ServerMessage =
   | { type: "hello"; status: StatusSnapshot; backlog: TapeRow[] }
   | { type: "trades"; rows: TapeRow[] }
