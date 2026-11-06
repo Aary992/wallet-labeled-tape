@@ -56,6 +56,7 @@ npm run probe
 | `server/src/db.ts` | SQLite schema: accounts, positions, trades (48h), cohorts |
 | `web/src/` | Vite + React tape UI |
 | `docs/PRD.md` | The product spec |
+| `docs/ARCHITECTURE.md` | How the parts fit, the forward-test design, the build order |
 | `TASKS.md` | Every task, who did it and what is next |
 | `AI_USAGE.md` | Where and how AI tools were used (ETHGlobal requirement) |
 | `CONTEXT.md`, `CLAUDE.md`, `AGENTS.md` | Working rules for the team and its AI tools |

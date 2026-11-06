@@ -7,7 +7,7 @@ Update CURRENT STATE at the end of every session. `TASKS.md` is the only task li
 
 Wallet-Labeled Tape: live Hyperliquid trade tape with both accounts on every trade, tagged by
 size, activity and 30-day performance, plus the position action each trade caused. Spec:
-`docs/PRD.md`. Event: ETHGlobal Mumbai 2026, From Scratch track, in person at Jio World
+`docs/PRD.md`. How it fits together and the build order: `docs/ARCHITECTURE.md`. Event: ETHGlobal Mumbai 2026, From Scratch track, in person at Jio World
 Convention Centre.
 
 ## Hard deadline
@@ -28,9 +28,9 @@ Freeze the forward-test cohort as early as possible; every hour before 09:00 is 
 
 | Who | Owns |
 |:-|:-|
-| Codex | Backend modules in `server/src/scoring/` (prompts in `docs/CODEX_PROMPTS.md`), tests |
-| Claude | UI, copy, demo script, reviewing Codex PRs |
-| Aarit | Product calls, sponsor choice, demo, submission, and any build task he takes in `TASKS.md` |
+| Aarit (A rows) | Product owner and release gate: approves the design, runs Codex, merges PRs, picks thresholds and prizes, runs the demo laptop, freezes the cohort, demo and submission |
+| Codex (X rows) | Backend modules and tests, in 3 parallel waves (prompts in `docs/CODEX_PROMPTS.md`) |
+| Claude (C rows) | Architecture, UI, copy, reviewing every Codex PR, tuning report and runbook for Aarit, demo script |
 
 ## Conventions
 
@@ -67,11 +67,21 @@ the Hyperliquid API. Launching Claude from another folder: `npm run setup -- --c
   warms up wherever the backend runs, so run it on the demo laptop for an hour before judging.
 - Only one backend per machine: a second copy stops with a "port is already taken" message.
 
-## CURRENT STATE (Fri 2026-11-06 03:15 IST)
+## CURRENT STATE (Fri 2026-11-06 16:05 IST)
+
+- Infrastructure designed (`docs/ARCHITECTURE.md`). Codex work split into 3 waves of
+  non-overlapping files; wave 1 (X01 to X04) is ready to paste. Interfaces pinned in
+  `shared/protocol.ts` (`AccountMetrics`, `AccountDetail`, `ForwardTestReport`), new config
+  sections (`scorer`, `positions`, `replay`, `cohorts`) and npm script names (`test`, `freeze`,
+  `preseed`, `forward-test`, `replay:record`, `dev:replay`). Those scripts point at files Codex
+  has not written yet, so they fail until their task lands.
+- Laptop is set up (`npm run setup` passed 16:00); plan is for it to be the demo machine.
+
+Earlier (03:15):
 
 - Live stream works for BTC, ETH and SOL; confirmed against the real API with `npm run probe`.
 - Fills confirmed: `startPosition`, `dir`, `closedPnl`, `crossed`, `fee`, plus `builderFee`
   (subtract it too), returned oldest first.
 - Relay at ws://localhost:8787/ws, UI at http://localhost:5181, fake feed with `npm run dev:fake`.
-- All accounts show Pending and all actions "unknown" until the scorer (T20) lands.
+- All accounts show Pending and all actions "unknown" until the scorer (X05) lands.
 - CI (typecheck and build) is green on main.

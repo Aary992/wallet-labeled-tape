@@ -14,4 +14,4 @@ account currently shows as **Pending** and every trade action as **unknown**.
 | `flow.ts` | TODO | F4: per coin, 15 min rolling count of profitable accounts that raised vs cut net long exposure, coverage % |
 | `forward-test.ts` | TODO | Validation: freeze a cohort at T0, record cohort signals, price after 10 s, then 15 / 60 / 240 min, minus taker fee |
 
-All thresholds are already in `../config.ts`. Prompts for Codex are in `docs/CODEX_PROMPTS.md`.
+Task IDs (X01 to X07) and the build order are in `docs/ARCHITECTURE.md`. All thresholds are already in `../config.ts`. Prompts for Codex are in `docs/CODEX_PROMPTS.md`.
