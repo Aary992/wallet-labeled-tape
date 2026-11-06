@@ -53,7 +53,7 @@ so submit early and improve.
 
 ## Images
 
-Use `docs/screenshots/01-tape.png`, `02-filtered.png`, `03-drawer.png`.
+Use `docs/screenshots/01-tape.png`, `02-drawer.png`, `03-btc-opens.png` (taken Fri 23:31 with 65 accounts scored; retake on the demo laptop Saturday morning when far more are scored and some are Profitable).
 
 ## Tech stack
 
