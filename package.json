@@ -15,19 +15,13 @@
     "setup": "node scripts/setup.mjs",
     "dev": "concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
     "dev:fake": "concurrently -n server,web -c cyan,magenta \"npm:dev:server:fake\" \"npm:dev:web\"",
-    "dev:replay": "concurrently -n server,web -c cyan,magenta \"npm:dev:server:replay\" \"npm:dev:web\"",
     "dev:server": "npm run dev -w server",
     "dev:server:fake": "npm run dev:fake -w server",
-    "dev:server:replay": "npm run dev:replay -w server",
     "dev:web": "npm run dev -w web",
     "probe": "npm run probe -w server",
     "typecheck": "npm run typecheck -w server && npm run typecheck -w web",
     "build": "npm run build -w web",
-    "test": "npm test -w server",
-    "replay:record": "npm run replay:record -w server",
-    "freeze": "npm run freeze -w server",
-    "preseed": "npm run preseed -w server",
-    "forward-test": "npm run forward-test -w server"
+    "test": "npm test -w server"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

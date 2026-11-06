@@ -1,21 +1,35 @@
 // Local HTTP + WebSocket server the browser connects to. ws://localhost:8787/ws streams tape rows,
-// GET /api/health returns status JSON.
+// GET /api/health returns status JSON, GET /api/account/:address returns one account's detail.
 
 import { createServer } from "node:http";
 import { WebSocketServer, WebSocket } from "ws";
 import { config } from "./config.ts";
-import type { ServerMessage, StatusSnapshot, TapeRow } from "../../shared/protocol.ts";
+import type { AccountDetail, ServerMessage, StatusSnapshot, TapeRow } from "../../shared/protocol.ts";
+
+/** Returns null for an address the app has never seen (404). */
+export type AccountLookup = (address: string) => AccountDetail | null;
 
 export class Relay {
   private wss: WebSocketServer;
   private backlog: TapeRow[] = [];
 
-  constructor(private readonly getStatus: () => StatusSnapshot) {
+  constructor(
+    private readonly getStatus: () => StatusSnapshot,
+    private readonly lookupAccount: AccountLookup = () => null,
+  ) {
     const http = createServer((req, res) => {
       res.setHeader("access-control-allow-origin", "*");
       if (req.url === "/api/health") {
         res.setHeader("content-type", "application/json");
         res.end(JSON.stringify({ ok: true, status: this.getStatus() }));
+        return;
+      }
+      const match = req.url?.match(/^\/api\/account\/(0x[0-9a-fA-F]{40})$/);
+      if (match) {
+        const detail = this.lookupAccount(match[1]!.toLowerCase());
+        res.setHeader("content-type", "application/json");
+        if (!detail) res.statusCode = 404;
+        res.end(JSON.stringify(detail ?? { error: "not seen" }));
         return;
       }
       res.statusCode = 404;

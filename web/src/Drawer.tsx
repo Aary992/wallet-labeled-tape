@@ -34,11 +34,11 @@ export function Drawer({ address, rows, onClose }: { address: string; rows: Tape
 
       {m ? <MetricsList m={m} /> : <NotScored loading={remote.state === "loading"} />}
 
-      {detail && detail.positions.length > 0 && (
+      {detail && perps(detail).length > 0 && (
         <>
           <h3>Current position</h3>
           <div className="positions">
-            {detail.positions.map((p) => (
+            {perps(detail).map((p) => (
               <div key={p.coin} className="mini-row pos">
                 <span>{p.coin}</span>
                 <span className={p.size > 0 ? "side buy" : p.size < 0 ? "side sell" : "muted"}>
@@ -76,7 +76,7 @@ export function Drawer({ address, rows, onClose }: { address: string; rows: Tape
 
       <p className="scope">
         {m
-          ? `Based on ${m.closedPositions} closed positions over the last ${Math.floor(m.coverageDays)} days on Hyperliquid. `
+          ? `Based on ${m.closedPositions} closed positions over ${m.coverageDays < 1 ? "less than a day" : `the last ${Math.floor(m.coverageDays)} days`} on Hyperliquid. `
           : "Tags appear once this account's history is fetched. "}
         Hedges on other venues and other wallets of the same owner are not visible.
       </p>
@@ -92,7 +92,7 @@ export function Drawer({ address, rows, onClose }: { address: string; rows: Tape
 
 function MetricsList({ m }: { m: AccountMetrics }) {
   const coverage =
-    `last ${Math.floor(m.coverageDays)} days` + (m.hitFillCap ? " (10,000 fill limit reached)" : "");
+    (m.coverageDays < 1 ? "under 1 day" : `last ${Math.floor(m.coverageDays)} days`) + (m.hitFillCap ? " (10,000 fill limit reached)" : "");
   return (
     <dl className="metrics">
       <Metric label="Net PnL after fees" value={signedUsd(m.netPnlUsd)} tone={m.netPnlUsd > 0 ? "good" : m.netPnlUsd < 0 ? "bad" : undefined} />
@@ -112,6 +112,11 @@ function MetricsList({ m }: { m: AccountMetrics }) {
       <Metric label="Resting orders" value={pctOfOne(m.makerShare, 0)} />
     </dl>
   );
+}
+
+/** Perp positions only (spot tokens show as "@123"), at most 6. */
+function perps(d: AccountDetail) {
+  return d.positions.filter((p) => !p.coin.startsWith("@")).slice(0, 6);
 }
 
 function NotScored({ loading }: { loading: boolean }) {

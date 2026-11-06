@@ -3,7 +3,7 @@ import type { Coin, TapeRow, TradeSide } from "../../shared/protocol.ts";
 import { useTape } from "./useTape.ts";
 import { Action, Tags } from "./Tags.tsx";
 import { Drawer } from "./Drawer.tsx";
-import { FlowPanel, ForwardTestCard } from "./Panels.tsx";
+import { FlowPanel } from "./Panels.tsx";
 import { clock, price, short, usd } from "./format.ts";
 
 type CoinFilter = Coin | "ALL";
@@ -23,16 +23,27 @@ export function App() {
   const minSize = SIZE_STOPS[sizeStop] ?? 0;
   const coins = status?.coins ?? ["BTC", "ETH", "SOL"];
 
+  // A row keeps the tags its accounts had when it arrived. Once an account is scored, show its
+  // latest tags on every row (rows are newest first, so the first scored sighting is the latest).
+  const fresh = useMemo(() => {
+    const latest = new Map<string, TradeSide["tags"]>();
+    for (const r of rows)
+      for (const side of [r.buyer, r.seller])
+        if (side.tags.history !== "pending" && !latest.has(side.address)) latest.set(side.address, side.tags);
+    const upd = (side: TradeSide): TradeSide => ({ ...side, tags: latest.get(side.address) ?? side.tags });
+    return rows.map((r) => ({ ...r, buyer: upd(r.buyer), seller: upd(r.seller) }));
+  }, [rows]);
+
   const visible = useMemo(
     () =>
-      rows.filter((r) => {
+      fresh.filter((r) => {
         if (coin !== "ALL" && r.coin !== coin) return false;
         if (r.sizeUsd < minSize) return false;
         if (profitableOnly && r.buyer.tags.perf !== "profitable" && r.seller.tags.perf !== "profitable") return false;
         if (hideCloses && r.buyer.action === "close" && r.seller.action === "close") return false;
         return true;
       }),
-    [rows, coin, minSize, profitableOnly, hideCloses],
+    [fresh, coin, minSize, profitableOnly, hideCloses],
   );
 
   const connection = !relayUp ? "down" : (status?.connection ?? "reconnecting");
@@ -62,7 +73,12 @@ export function App() {
 
       <aside className="left">
         <FlowPanel coins={coins} flow={flow} focus={coin} />
-        <ForwardTestCard />
+        <h2 className="spaced">How tags work</h2>
+        <p className="muted how">
+          Each account is scored on its last 30 days of Hyperliquid fills, rebuilt into closed positions.
+          Profitable (30d) needs positive PnL after fees, more won than lost, limited drawdown and enough
+          closed positions to judge. Biggest traders are scored first. Click any address for the numbers.
+        </p>
       </aside>
 
       <main className="center">
@@ -107,7 +123,7 @@ export function App() {
         </div>
       </main>
 
-      {selected && <Drawer address={selected} rows={rows} onClose={() => setSelected(null)} />}
+      {selected && <Drawer address={selected} rows={fresh} onClose={() => setSelected(null)} />}
 
       <footer className="footer">
         Tags describe Hyperliquid accounts over a stated window. Not a full picture of any trader. Not advice.

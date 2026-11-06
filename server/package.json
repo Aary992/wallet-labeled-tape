@@ -9,12 +9,7 @@
     "start": "tsx --env-file-if-exists=../.env src/index.ts",
     "probe": "tsx src/probe.ts",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test \"src/**/*.test.ts\"",
-    "dev:replay": "tsx --env-file-if-exists=../.env src/index.ts --replay latest",
-    "replay:record": "tsx src/scripts/record-replay.ts",
-    "freeze": "tsx --env-file-if-exists=../.env src/scripts/freeze-cohort.ts",
-    "preseed": "tsx --env-file-if-exists=../.env src/scripts/preseed.ts",
-    "forward-test": "tsx --env-file-if-exists=../.env src/scripts/forward-test.ts"
+    "test": "tsx --test \"src/**/*.test.ts\""
   },
   "dependencies": {
     "ws": "^8.18.0"

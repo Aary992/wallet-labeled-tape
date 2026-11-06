@@ -14,20 +14,27 @@ export class InfoClient {
       headers: { "content-type": "application/json" },
       body: JSON.stringify(body),
     });
-    if (res.status === 429) throw new Error("rate limited (429): budget numbers in config.ts are too high");
+    if (res.status === 429) {
+      // Back off once, then let the caller retry.
+      await new Promise((r) => setTimeout(r, 10_000));
+      throw new Error("rate limited (429): backed off 10 s");
+    }
     if (!res.ok) throw new Error(`info ${res.status}: ${await res.text()}`);
     return (await res.json()) as T;
   }
 
   /**
-   * One page of fills (max 2,000) from startTime. Weight is charged up front at the base cost;
-   * TODO(scorer): charge the per-item extra after the response, once confirmed in the docs.
+   * One page of fills (max 2,000) from startTime, oldest first. The base weight is charged up
+   * front and the per-item extra (1 per 20 fills) right after the response.
    */
-  userFillsByTime(user: string, startTime: number, endTime?: number): Promise<HlFill[]> {
-    return this.post<HlFill[]>(
+  async userFillsByTime(user: string, startTime: number, endTime?: number): Promise<HlFill[]> {
+    const fills = await this.post<HlFill[]>(
       { type: "userFillsByTime", user, startTime, endTime, aggregateByTime: false },
       config.budget.userFillsBaseWeight,
     );
+    const extra = Math.floor(fills.length / 20) * config.budget.userFillsWeightPer20Items;
+    if (extra > 0) await this.budget.take(extra);
+    return fills;
   }
 
   clearinghouseState(user: string): Promise<HlClearinghouseState> {
