@@ -11,7 +11,7 @@ work goes in this file. How the parts fit: `docs/ARCHITECTURE.md`.
 
 | # | Track | What "done" means | Tasks | Done |
 |:-|:-|:-|:-|:-|
-| 1 | Backend | Every account scored, every trade tagged with its action, flow and forward test computed | X01 to X07 | 0 of 7 |
+| 1 | Backend | Every account scored, every trade tagged with its action, flow and forward test computed | X01 to X07 | 2 of 7 |
 | 2 | Infrastructure | Demo laptop running all night, replay fallback recorded, cohort frozen and pushed, CI runs tests | A06, A07, A10, X04, C24 | 1 of 5 |
 | 3 | Frontend | Drawer, flow cards and forward-test card show real data | C21, C22, C23 | 0 of 3 |
 | 4 | Testing | PRs reviewed, accounts spot-checked, thresholds picked, forward test reported | C20, C25, A08, A09 | 0 of 4 |
@@ -27,10 +27,10 @@ Product owner and release gate: nothing merges, freezes or ships without him.
 |:-|:-|:-|:-|:-|:-|
 | A00 | Product idea and PRD | | | Thu 11-05 | ✅ Thu 11-05 (_Aarit adds detail_) |
 | A01 | Set the build order (backend and infrastructure first) and split the work three ways | | | Fri 16:00 | ✅ Fri 11-06 15:50 |
-| A02 | Approve the architecture in `docs/ARCHITECTURE.md` | 1 | C19 | Fri 16:30 | |
+| A02 | Approve the architecture in `docs/ARCHITECTURE.md` | 1 | C19 | Fri 16:30 | ✅ Fri 11-06 16:06 (went ahead with Round 1) |
 | A03 | Pick up to 3 partner prizes after reading each prize's rules (shortlist in `docs/PRIZES.md`) | 5 | | Fri 18:00 | |
-| A04 | Run Codex: paste the prompts from `docs/CODEX_PROMPTS.md` two at a time, round 1 now, the next round once the last one is merged | 1 | A02 | Fri 16:30 | |
-| A05 | Merge each Codex PR on GitHub once Claude's review says ready | 1 | C20 | per PR | |
+| A04 | Run Codex: paste the prompts from `docs/CODEX_PROMPTS.md` two at a time, round 1 now, the next round once the last one is merged | 1 | A02 | Fri 16:30 | (doing) Round 1 sent 16:06, done 16:12 |
+| A05 | Merge each Codex PR on GitHub once Claude's review says ready | 1 | C20 | per PR | (doing) Round 1: approved at 16:26, Claude pushed the merge 16:28 |
 | A06 | Demo laptop on duty: plugged in, sleep off, `npm run dev` running from X05's merge until judging | 2 | X05 | Fri 20:30 | |
 | A07 | Record a 2-minute replay on good WiFi: `npm run replay:record` | 2 | X04 | Sat 01:00 | |
 | A08 | Spot-check 5 scored accounts against the Hyperliquid website (PnL sign, size, activity) | 4 | X05 | Fri 22:15 | |
@@ -49,8 +49,8 @@ after another. Claude ticks these rows after each merge (Codex does not edit thi
 
 | ID | Task | Track | Round | Needs | By (IST) | Done |
 |:-|:-|:-|:-|:-|:-|:-|
-| X01 | Scoring math: round trips, metrics, tags, tests, `npm test` in CI | 1 | 1 | | Fri 18:30 | |
-| X02 | Position tracker logic: open, add, reduce, close, flip | 1 | 1 | | Fri 18:30 | |
+| X01 | Scoring math: round trips, metrics, tags, tests, `npm test` in CI | 1 | 1 | | Fri 18:30 | ✅ Fri 11-06 16:12 (PR #2, merged 16:28) |
+| X02 | Position tracker logic: open, add, reduce, close, flip | 1 | 1 | | Fri 18:30 | ✅ Fri 11-06 16:10 (PR #1, merged 16:28) |
 | X03 | Flow and forward-test math | 1 | 2 | | Fri 20:30 | |
 | X04 | Replay recorder and playback (venue WiFi fallback) | 2 | 4 | X06 | Sat 00:30 | |
 | X05 | Scorer loop, `/api/account/:address`, `npm run freeze`, `npm run preseed` | 1 | 2 | X01, X02 | Fri 20:30 | |
@@ -81,14 +81,14 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C16 | First task list; AI log reorganized, "Not built by AI" section left for Aarit | | | | ✅ Fri 11-06 03:04 |
 | C17 | Second-machine setup: `npm run setup`, context files for Claude and Codex, line endings, clear port-in-use error | | | | ✅ Fri 11-06 03:04 |
 | C18 | Fixed the tape order: newest first by exchange time, not arrival order | | | | ✅ Fri 11-06 03:04 |
-| C19 | Infrastructure design (`docs/ARCHITECTURE.md`), Codex prompts split into parallel rounds, pinned interfaces, config and script names, this checksheet | 1 | A01 | Fri 16:30 | ✅ Fri 11-06 16:05 |
-| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | (doing) X01 (PR 2) and X02 (PR 1) reviewed 17:05: ready to merge |
-| C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:20 with empty states; finish check once X05 serves data |
-| C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:20; finish check once X06 broadcasts flow |
-| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:20; README table once X07 reports |
-| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | ✅ Fri 11-06 16:40 (commands checked again after X05 lands) |
+| C19 | Infrastructure design (`docs/ARCHITECTURE.md`), Codex prompts split into parallel rounds, pinned interfaces, config and script names, this checksheet | 1 | A01 | Fri 16:30 | ✅ Fri 11-06 15:59 |
+| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | (doing) X01 (PR 2) and X02 (PR 1) reviewed 16:24, merged 16:28 |
+| C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:16 with empty states; finish check once X05 serves data |
+| C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:16; finish check once X06 broadcasts flow |
+| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:16; README table once X07 reports |
+| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | ✅ Fri 11-06 16:17 (commands checked again after X05 lands) |
 | C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | |
-| C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | (doing) draft in `docs/DEMO.md` 16:50; numbers filled in Saturday |
+| C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | (doing) draft in `docs/DEMO.md` 16:20; numbers filled in Saturday |
 
 ## Partner prizes (after A03)
 

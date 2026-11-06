@@ -1,6 +1,6 @@
 # 3-minute demo script (draft)
 
-Draft written Fri 11-06 16:50 IST from the PRD script and the screens as built. Numbers in
+Draft written Fri 11-06 16:20 IST from the PRD script and the screens as built. Numbers in
 [brackets] get filled in from the live app and the forward-test result on Saturday morning. Aarit
 presents; say it in your own words, these are the beats.
 

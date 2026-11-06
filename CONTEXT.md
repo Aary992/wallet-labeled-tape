@@ -67,10 +67,25 @@ the Hyperliquid API. Launching Claude from another folder: `npm run setup -- --c
   warms up wherever the backend runs, so run it on the demo laptop for an hour before judging.
 - Only one backend per machine: a second copy stops with a "port is already taken" message.
 
-## CURRENT STATE (Fri 2026-11-06 16:05 IST)
+## CURRENT STATE (Fri 2026-11-06 16:30 IST)
+
+- **Round 1 done**: X01 (scoring math) and X02 (position tracker) merged 16:28, 54 tests, CI green.
+  **Round 2 next**: X05 (scorer loop) and X03 (flow and forward-test math), prompts in
+  `docs/CODEX_PROMPTS.md`. After X05 merges, the demo laptop starts `npm run dev` and keeps it
+  running (`docs/RUNBOOK.md`).
+- UI for the drawer, flow cards and forward-test card is built (Claude) and waits for X05, X06 and
+  X07 to serve data. Demo script draft `docs/DEMO.md`; prize shortlist `docs/PRIZES.md` waits on
+  Aarit (A03).
+- Codex runs locally on the laptop and may work in `Documentswallet-labeled-tape` itself, so
+  Claude works in its own worktree (`Documentswallet-tape-claude`, branch `claude/ui-screens`,
+  pushed with `git push origin claude/ui-screens:main`).
+- `config.scoring.fullCoverageDays` is 29 (coverage starts at the oldest fill, which always lands
+  just after the window opens).
+
+Earlier (15:59):
 
 - Infrastructure designed (`docs/ARCHITECTURE.md`). Codex work split into rounds of two tasks with
-  non-overlapping files; round 1 (X01, X02) is ready to paste. Codex leaves AI_USAGE, TASKS and
+  non-overlapping files. Codex leaves AI_USAGE, TASKS and
   CONTEXT to Claude, who logs each PR after the merge. Interfaces pinned in
   `shared/protocol.ts` (`AccountMetrics`, `AccountDetail`, `ForwardTestReport`), new config
   sections (`scorer`, `positions`, `replay`, `cohorts`) and npm script names (`test`, `freeze`,

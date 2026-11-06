@@ -9,7 +9,7 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Tool | Used for |
 |:-|:-|
 | Claude Code | Repo setup, code, docs and fixes listed in the file log |
-| Codex | Not used yet. Planned for the backend tasks in `docs/CODEX_PROMPTS.md` |
+| Codex | Backend tasks X01 to X07 from `docs/CODEX_PROMPTS.md`, each as its own pull request. Codex lists its files in the PR; Claude copies them into this log after Aarit approves the merge |
 
 ## File log
 
@@ -27,14 +27,17 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 03:04 | Claude Code | `scripts/setup.mjs`, `package.json`, `CLAUDE.md`, `AGENTS.md`, `.gitattributes`, `.claude/launch.json`, `README.md`, `CONTEXT.md` | One-command setup for a second machine, context files for Claude and Codex, line-ending rules |
 | Fri 11-06 03:04 | Claude Code | `server/src/relay.ts` | Clear error when the relay port is already taken |
 | Fri 11-06 03:04 | Claude Code | `server/src/relay.ts`, `web/src/useTape.ts` | Tape sorted newest first by exchange time (coins arrive on separate streams) |
-| Fri 11-06 16:05 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `package.json`, `server/package.json` | Pinned the interfaces Codex builds against: new config sections (scorer, positions, replay, cohorts), API types for account detail and the forward test, npm script names |
-| Fri 11-06 16:05 | Claude Code | `docs/ARCHITECTURE.md`, `docs/CODEX_PROMPTS.md` | Wrote the infrastructure design and the forward-test design; rewrote the Codex prompts as 3 parallel waves with file ownership |
-| Fri 11-06 16:05 | Claude Code | `TASKS.md`, `CONTEXT.md`, `AGENTS.md`, `README.md`, `server/src/scoring/README.md`, `AI_USAGE.md` | Rebuilt the task list as a 5-track tracker plus one checksheet each for Aarit, Codex and Claude; updated the context files to match |
-| Fri 11-06 16:20 | Claude Code | `docs/CODEX_PROMPTS.md`, `AGENTS.md`, `CLAUDE.md`, `TASKS.md`, `CONTEXT.md`, `docs/ARCHITECTURE.md`, `AI_USAGE.md` | Reordered the Codex prompts into rounds of two (X05 also stores the cohort sha256 for X07 to check); Codex now lists its files in the PR and Claude logs them after the merge, so parallel PRs never conflict on the log files |
-| Fri 11-06 16:20 | Claude Code | `web/src/App.tsx`, `web/src/Drawer.tsx`, `web/src/Panels.tsx`, `web/src/Tags.tsx`, `web/src/api.ts`, `web/src/format.ts`, `web/src/styles.css` | Account drawer with full metrics and positions, Profitable Account Flow cards, forward-test card with horizon tabs; built against the pinned API types with empty states until the backend endpoints land |
-| Fri 11-06 16:40 | Claude Code | `docs/RUNBOOK.md`, `docs/CODEX_PROMPTS.md`, `README.md`, `TASKS.md` | Demo-night runbook in plain steps for Aarit; X05 prompt fix so the cohort file name has no colons (invalid on Windows) |
-| Fri 11-06 16:50 | Claude Code | `docs/PRIZES.md`, `docs/DEMO.md`, `README.md`, `TASKS.md` | Partner-prize shortlist from the official ETHGlobal Mumbai prize list for Aarit to choose from; first draft of the 3-minute demo script |
-| Fri 11-06 17:05 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `TASKS.md`, `AI_USAGE.md` | Reviewed X01 and X02 (merged together in a scratch copy: 54 tests pass; scored 6 live accounts with X01). Set fullCoverageDays to 29 so a full 30-day history counts as full; clarified the hitFillCap comment Codex flagged |
+| Fri 11-06 15:59 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `package.json`, `server/package.json` | Pinned the interfaces Codex builds against: new config sections (scorer, positions, replay, cohorts), API types for account detail and the forward test, npm script names |
+| Fri 11-06 15:59 | Claude Code | `docs/ARCHITECTURE.md`, `docs/CODEX_PROMPTS.md` | Wrote the infrastructure design and the forward-test design; rewrote the Codex prompts as 3 parallel waves with file ownership |
+| Fri 11-06 15:59 | Claude Code | `TASKS.md`, `CONTEXT.md`, `AGENTS.md`, `README.md`, `server/src/scoring/README.md`, `AI_USAGE.md` | Rebuilt the task list as a 5-track tracker plus one checksheet each for Aarit, Codex and Claude; updated the context files to match |
+| Fri 11-06 16:03 | Claude Code | `docs/CODEX_PROMPTS.md`, `AGENTS.md`, `CLAUDE.md`, `TASKS.md`, `CONTEXT.md`, `docs/ARCHITECTURE.md`, `AI_USAGE.md` | Reordered the Codex prompts into rounds of two (X05 also stores the cohort sha256 for X07 to check); Codex now lists its files in the PR and Claude logs them after the merge, so parallel PRs never conflict on the log files |
+| Fri 11-06 16:16 | Claude Code | `web/src/App.tsx`, `web/src/Drawer.tsx`, `web/src/Panels.tsx`, `web/src/Tags.tsx`, `web/src/api.ts`, `web/src/format.ts`, `web/src/styles.css` | Account drawer with full metrics and positions, Profitable Account Flow cards, forward-test card with horizon tabs; built against the pinned API types with empty states until the backend endpoints land |
+| Fri 11-06 16:17 | Claude Code | `docs/RUNBOOK.md`, `docs/CODEX_PROMPTS.md`, `README.md`, `TASKS.md` | Demo-night runbook in plain steps for Aarit; X05 prompt fix so the cohort file name has no colons (invalid on Windows) |
+| Fri 11-06 16:20 | Claude Code | `docs/PRIZES.md`, `docs/DEMO.md`, `README.md`, `TASKS.md` | Partner-prize shortlist from the official ETHGlobal Mumbai prize list for Aarit to choose from; first draft of the 3-minute demo script |
+| Fri 11-06 16:24 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `TASKS.md`, `AI_USAGE.md` | Reviewed X01 and X02 (merged together in a scratch copy: 54 tests pass; scored 6 live accounts with X01). Set fullCoverageDays to 29 so a full 30-day history counts as full; clarified the hitFillCap comment Codex flagged |
+| Fri 11-06 16:10 | Codex | `server/src/scoring/positions.ts`, `server/src/scoring/positions.test.ts` | X02 (PR #1, merged 16:28): position action classifier (open, add, reduce, close, flip), positions from fills, PositionBook with reconcile flags, and tests |
+| Fri 11-06 16:12 | Codex | `server/src/scoring/roundtrips.ts`, `server/src/scoring/roundtrips.test.ts`, `server/src/scoring/metrics.ts`, `server/src/scoring/metrics.test.ts`, `server/src/scoring/tags.ts`, `server/src/scoring/tags.test.ts`, `.github/workflows/ci.yml` | X01 (PR #2, merged 16:28): round-trip rebuild per coin, every account metric, tag rules from config, boundary tests, `npm test` in CI |
+| Fri 11-06 16:30 | Claude Code | `AI_USAGE.md`, `TASKS.md`, `CONTEXT.md`, `docs/DEMO.md`, `docs/PRIZES.md` | Merged X01 and X02 into main after Aarit approved (54 tests, CI green); logged Codex's files; corrected earlier log times that had been estimated instead of taken from the commits |
 
 ## Not built by AI
 

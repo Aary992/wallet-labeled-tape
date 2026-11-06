@@ -1,6 +1,6 @@
 # Partner prizes: shortlist for Aarit (A03)
 
-Source: the ETHGlobal Mumbai prizes page (read Fri 11-06 16:45 IST). We are on the From Scratch
+Source: the ETHGlobal Mumbai prizes page (read Fri 11-06 16:19 IST). We are on the From Scratch
 track, so "Continuity only" prizes do not apply. Up to 3 partner prizes. **Aarit decides**; this
 page only lays out the fit. ETHGlobal may drop AI-only projects from partner prizes, so the
 `TASKS.md` record of Aarit's own work matters here too.
