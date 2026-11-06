@@ -28,7 +28,7 @@ Product owner and release gate: nothing merges, freezes or ships without him.
 | A00 | Product idea and PRD | | | Thu 11-05 | ✅ Thu 11-05 (_Aarit adds detail_) |
 | A01 | Set the build order (backend and infrastructure first) and split the work three ways | | | Fri 16:00 | ✅ Fri 11-06 15:50 |
 | A02 | Approve the architecture in `docs/ARCHITECTURE.md` | 1 | C19 | Fri 16:30 | |
-| A03 | Pick up to 3 partner prizes after reading each prize's rules | 5 | | Fri 18:00 | |
+| A03 | Pick up to 3 partner prizes after reading each prize's rules (shortlist in `docs/PRIZES.md`) | 5 | | Fri 18:00 | |
 | A04 | Run Codex: paste the prompts from `docs/CODEX_PROMPTS.md` two at a time, round 1 now, the next round once the last one is merged | 1 | A02 | Fri 16:30 | |
 | A05 | Merge each Codex PR on GitHub once Claude's review says ready | 1 | C20 | per PR | |
 | A06 | Demo laptop on duty: plugged in, sleep off, `npm run dev` running from X05's merge until judging | 2 | X05 | Fri 20:30 | |
@@ -88,13 +88,12 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:20; README table once X07 reports |
 | C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | ✅ Fri 11-06 16:40 (commands checked again after X05 lands) |
 | C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | |
-| C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | |
+| C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | (doing) draft in `docs/DEMO.md` 16:50; numbers filled in Saturday |
 
 ## Partner prizes (after A03)
 
-Rows get added here once Aarit picks. Candidates that fit without bending the product: ENS (show
-names next to addresses), and a sponsor that can timestamp the frozen cohort's sha256 on-chain as
-public proof it was not edited (check whether Hedera, Arkiv or 0G prize rules allow it).
+Rows get added here once Aarit picks. Claude's shortlist with the fit and cost of each is in
+`docs/PRIZES.md` (recommended: Arkiv from scratch, Hedera SDKs, EF CROPS).
 
 ## Stretch (only once tracks 1 to 4 are done)
 
