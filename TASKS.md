@@ -83,9 +83,9 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C18 | Fixed the tape order: newest first by exchange time, not arrival order | | | | ✅ Fri 11-06 03:04 |
 | C19 | Infrastructure design (`docs/ARCHITECTURE.md`), Codex prompts split into parallel rounds, pinned interfaces, config and script names, this checksheet | 1 | A01 | Fri 16:30 | ✅ Fri 11-06 16:05 |
 | C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | |
-| C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | |
-| C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | |
-| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | |
+| C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:20 with empty states; finish check once X05 serves data |
+| C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:20; finish check once X06 broadcasts flow |
+| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:20; README table once X07 reports |
 | C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | |
 | C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | |
 | C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | |

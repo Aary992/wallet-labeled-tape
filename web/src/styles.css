@@ -114,3 +114,36 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .scope { color: var(--muted); font-size: 12px; }
 
 .footer { grid-area: foot; padding: 8px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; background: var(--panel); }
+
+/* flow cards */
+.flow-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.coverage { font-size: 11px; color: var(--muted); font-family: var(--mono); }
+.coverage.low { color: var(--amber); }
+.flow-counts { display: flex; gap: 14px; font-size: 12px; color: var(--muted); }
+.flow-counts strong { font-size: 18px; font-weight: 600; margin-right: 3px; }
+.flow-counts .raised strong { color: var(--good); }
+.flow-counts .cut strong { color: var(--bad); }
+.flow-bar { height: 4px; border-radius: 2px; background: var(--bad); margin: 6px 0; overflow: hidden; }
+.flow-bar span { display: block; height: 100%; background: var(--good); }
+.flow-line { font-size: 12px; color: var(--muted); }
+
+/* forward-test card */
+.ft-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.ft-tabs { display: flex; gap: 4px; margin-bottom: 8px; }
+.ft-tabs .tab { padding: 3px 10px; font-size: 12px; }
+.ft-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.ft-table th { color: var(--muted); font-weight: 500; text-align: left; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.ft-table td { padding: 4px 0; border-bottom: 1px solid #1a1f26; }
+.ft-table th.num, .ft-table td.num { text-align: right; padding-left: 6px; }
+.ft-table tr.lead td:first-child { color: var(--good); }
+.ft-note { font-size: 11px; color: var(--muted); margin: 8px 0 0; }
+.good { color: var(--good); }
+.bad { color: var(--bad); }
+
+/* drawer additions */
+.not-scored { color: var(--muted); background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; }
+.mini-row { grid-template-columns: 70px 40px 56px 1fr auto; align-items: center; }
+.mini-row.pos { grid-template-columns: 40px 50px 1fr auto; }
+.positions { margin-bottom: 16px; }
+.metrics dd.good { color: var(--good); }
+.metrics dd.bad { color: var(--bad); }
