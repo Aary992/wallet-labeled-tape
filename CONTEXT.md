@@ -29,7 +29,7 @@ Freeze the forward-test cohort as early as possible; every hour before 09:00 is 
 | Who | Owns |
 |:-|:-|
 | Aarit (A rows) | Product owner and release gate: approves the design, runs Codex, merges PRs, picks thresholds and prizes, runs the demo laptop, freezes the cohort, demo and submission |
-| Codex (X rows) | Backend modules and tests, in 3 parallel waves (prompts in `docs/CODEX_PROMPTS.md`) |
+| Codex (X rows) | Backend modules and tests, two at a time in rounds (prompts in `docs/CODEX_PROMPTS.md`) |
 | Claude (C rows) | Architecture, UI, copy, reviewing every Codex PR, tuning report and runbook for Aarit, demo script |
 
 ## Conventions
@@ -69,8 +69,9 @@ the Hyperliquid API. Launching Claude from another folder: `npm run setup -- --c
 
 ## CURRENT STATE (Fri 2026-11-06 16:05 IST)
 
-- Infrastructure designed (`docs/ARCHITECTURE.md`). Codex work split into 3 waves of
-  non-overlapping files; wave 1 (X01 to X04) is ready to paste. Interfaces pinned in
+- Infrastructure designed (`docs/ARCHITECTURE.md`). Codex work split into rounds of two tasks with
+  non-overlapping files; round 1 (X01, X02) is ready to paste. Codex leaves AI_USAGE, TASKS and
+  CONTEXT to Claude, who logs each PR after the merge. Interfaces pinned in
   `shared/protocol.ts` (`AccountMetrics`, `AccountDetail`, `ForwardTestReport`), new config
   sections (`scorer`, `positions`, `replay`, `cohorts`) and npm script names (`test`, `freeze`,
   `preseed`, `forward-test`, `replay:record`, `dev:replay`). Those scripts point at files Codex

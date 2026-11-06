@@ -1,28 +1,29 @@
 # Codex prompts
 
-Aarit pastes these into Codex, one Codex task per prompt. **Prompts in the same wave run at the
-same time**: each owns different files, so their pull requests do not conflict. Start a wave only
-when the wave before it is merged. Claude reviews every PR; Aarit merges it.
+Aarit pastes these into Codex, one Codex task per prompt, **two at a time**. The two prompts in a
+round own different files, so their pull requests do not conflict. Start a round only when the
+round before it is merged. Claude reviews every PR; Aarit merges it.
 
-Every prompt also binds Codex to `AGENTS.md`: log files in `AI_USAGE.md` (Tool = Codex), move its
-row in `TASKS.md` to Done (Who = Codex, time in IST), update CURRENT STATE in `CONTEXT.md`, keep
-`npm run typecheck`, `npm run build` and `npm test` green, open a PR and never merge it.
+Codex never edits `TASKS.md`, `AI_USAGE.md` or `CONTEXT.md`: two PRs editing the same log
+lines would conflict. Codex lists every file it changed in the PR description instead, and Claude
+adds those rows to the logs right after the merge. Codex keeps `npm run typecheck`,
+`npm run build` and `npm test` green, opens a PR and never merges it.
 
 Interfaces are already pinned: `shared/protocol.ts` (`AccountMetrics`, `AccountDetail`,
 `ForwardTestReport`), `server/src/config.ts` (every threshold, including `scorer`, `positions`,
 `replay`, `cohorts`) and the npm script names in both `package.json` files. Use them as they are.
 
-| Wave | Prompt | Task | Needs |
+| Round | Prompt | Task | Needs |
 |:-|:-|:-|:-|
 | 1 | Scoring math | X01 | |
 | 1 | Position tracker logic | X02 | |
-| 1 | Flow and forward-test math | X03 | |
-| 1 | Replay | X04 | |
 | 2 | Scorer loop, account API, freeze, pre-seed | X05 | X01, X02 merged |
+| 2 | Flow and forward-test math | X03 | |
 | 3 | Live positions, reconcile, flow broadcast | X06 | X03, X05 merged |
 | 3 | Forward-test runner and API | X07 | X03, X05 merged |
+| 4 | Replay (venue WiFi fallback) | X04 | X06 merged |
 
-## Wave 1, prompt X01: scoring math
+## Round 1, prompt X01: scoring math
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and the "Wallet
@@ -58,10 +59,11 @@ Pure functions only: no network, no database, no imports from index.ts.
    cap, every tag boundary on both sides.
 5. ci.yml: add "npm test" after typecheck.
 
-Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
+Done when npm test, npm run typecheck and npm run build pass. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 1, prompt X02: position tracker logic
+## Round 1, prompt X02: position tracker logic
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md and "Step 5" in
@@ -83,10 +85,11 @@ Do not wire it into index.ts or accounts.ts; X06 does that.
 4. Tests (node:test) for every action, flip through zero, float dust near 0, unknown for
    unseeded, overwrite clearing needsReconcile.
 
-Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
+Done when npm test, npm run typecheck and npm run build pass. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 1, prompt X03: flow and forward-test math
+## Round 2, prompt X03: flow and forward-test math
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
@@ -117,10 +120,11 @@ Files you own (change nothing else): server/src/scoring/flow.ts, forward-test.ts
    coverage math, window expiry, adds vs reduces in signals, one signal per oid, short returns,
    fee subtraction, null prices skipped, random cohort is deterministic.
 
-Done when npm test, npm run typecheck and npm run build pass. Open a PR; do not merge it.
+Done when npm test, npm run typecheck and npm run build pass. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 1, prompt X04: replay (venue WiFi fallback)
+## Round 4, prompt X04: replay (venue WiFi fallback)
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md and docs/ARCHITECTURE.md ("Demo night")
@@ -137,14 +141,15 @@ record-replay.ts, and in server/src/index.ts only the line that picks the stream
    stay unique. "latest" means the newest file in config.replay.dir; print a clear message and
    exit 1 if there is none.
 3. index.ts: --replay <file|latest> picks ReplayStream; status mode stays "live" but log
-   "[tape] REPLAY of <file>". Touch nothing else in index.ts; X05 edits it next.
+   "[tape] REPLAY of <file>". Touch nothing else in index.ts.
 4. Windows-safe: no POSIX-only syntax, file names without colons.
 
 Done when npm run typecheck and npm run build pass and a 10 s recording plays back in
-npm run dev:replay. Open a PR; do not merge it.
+npm run dev:replay. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 2, prompt X05: scorer loop, account API, freeze, pre-seed
+## Round 2, prompt X05: scorer loop, account API, freeze, pre-seed
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
@@ -182,10 +187,11 @@ server/src/hl/info.ts, server/src/fake.ts.
 7. Tests: scorer with a fake InfoClient covering paging, early stop, the 10,000 cap, retries.
 
 Done when npm test, npm run typecheck and npm run build pass, and a live run shows accounts
-moving from Pending to tags within 2 minutes. Open a PR; do not merge it.
+moving from Pending to tags within 2 minutes. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 3, prompt X06: live positions, reconcile, flow broadcast
+## Round 3, prompt X06: live positions, reconcile, flow broadcast
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("What happens to
@@ -208,10 +214,11 @@ Files you own: server/src/accounts.ts, server/src/index.ts, server/src/scoring/r
    config.flow.broadcastEveryMs.
 
 Done when npm test, npm run typecheck and npm run build pass and a live run shows open, add,
-reduce, close and flip on the tape and flow messages every 5 s. Open a PR; do not merge it.
+reduce, close and flip on the tape and flow messages every 5 s. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```
 
-## Wave 3, prompt X07: forward-test runner and API
+## Round 3, prompt X07: forward-test runner and API
 
 ```
 Repo: wallet-labeled-tape. Read AGENTS.md, CONTEXT.md, docs/ARCHITECTURE.md ("The forward
@@ -232,5 +239,6 @@ editing them at the same time). Put your SQL in forward-test-store.ts, not db.ts
 2. relay.ts: GET /api/forward-test returns the latest stored ForwardTestReport, 404 before any.
 
 Done when npm test, npm run typecheck and npm run build pass and the script prints a report on a
-DB with a frozen cohort. Open a PR; do not merge it.
+DB with a frozen cohort. Do not edit TASKS.md, AI_USAGE.md or CONTEXT.md; list every file you changed in the PR
+description instead. Open a PR; do not merge it.
 ```

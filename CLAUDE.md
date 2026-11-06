@@ -14,6 +14,9 @@ ETHGlobal Mumbai 2026 hackathon project. **Submissions close Sat 2026-11-07 09:0
   happen.
 - Thresholds live only in `server/src/config.ts`. Every REST call goes through `InfoClient`.
 - UI copy says "Profitable (30d)", never "smart money". No em dashes. Unscored accounts show Pending.
+- After Aarit merges a Codex PR: copy the file list from the PR description into the `AI_USAGE.md`
+  file log (Tool = Codex, merge time), tick its X row in `TASKS.md`, update CURRENT STATE. Codex
+  does not edit those files itself, so two parallel PRs never conflict.
 - Commit small and often (judges read the history), and push before stopping.
 
 ## Commands

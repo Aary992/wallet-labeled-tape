@@ -118,15 +118,16 @@ does go in git, on purpose.
 
 ## Build order and file ownership
 
-Codex tasks in the same wave run at the same time. Each owns its files, so their pull requests
-cannot conflict. Claude reviews every pull request; Aarit merges.
+Codex runs two tasks at a time, in rounds. The two in a round own different files, so their pull
+requests cannot conflict; Codex also leaves the log files to Claude for the same reason. Claude
+reviews every pull request; Aarit merges.
 
-| Wave | Task | Files it owns | Needs |
+| Round | Task | Files it owns | Needs |
 |:-|:-|:-|:-|
 | 1 | X01 Scoring math | `scoring/roundtrips.ts`, `metrics.ts`, `tags.ts`, tests, `.github/workflows/ci.yml` | |
 | 1 | X02 Position tracker logic | `scoring/positions.ts`, test | |
-| 1 | X03 Flow and forward-test math | `scoring/flow.ts`, `scoring/forward-test.ts`, tests | |
-| 1 | X04 Replay | `hl/replay.ts`, `scripts/record-replay.ts`, stream choice in `index.ts` | |
+| 2 | X03 Flow and forward-test math | `scoring/flow.ts`, `scoring/forward-test.ts`, tests | |
+| 4 | X04 Replay | `hl/replay.ts`, `scripts/record-replay.ts`, stream choice in `index.ts` | X06 |
 | 2 | X05 Scorer loop, account API, freeze, pre-seed | `scoring/scorer.ts`, `scripts/freeze-cohort.ts`, `scripts/preseed.ts`, `db.ts`, `relay.ts`, `index.ts`, `hl/info.ts` | X01, X02 |
 | 3 | X06 Live positions, reconcile, flow broadcast | `accounts.ts`, `index.ts`, `scoring/reconcile.ts` | X03, X05 |
 | 3 | X07 Forward-test runner and API | `scripts/forward-test.ts`, `scoring/forward-test-store.ts`, `relay.ts` route | X03, X05 |

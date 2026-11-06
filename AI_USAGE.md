@@ -30,6 +30,7 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 16:05 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `package.json`, `server/package.json` | Pinned the interfaces Codex builds against: new config sections (scorer, positions, replay, cohorts), API types for account detail and the forward test, npm script names |
 | Fri 11-06 16:05 | Claude Code | `docs/ARCHITECTURE.md`, `docs/CODEX_PROMPTS.md` | Wrote the infrastructure design and the forward-test design; rewrote the Codex prompts as 3 parallel waves with file ownership |
 | Fri 11-06 16:05 | Claude Code | `TASKS.md`, `CONTEXT.md`, `AGENTS.md`, `README.md`, `server/src/scoring/README.md`, `AI_USAGE.md` | Rebuilt the task list as a 5-track tracker plus one checksheet each for Aarit, Codex and Claude; updated the context files to match |
+| Fri 11-06 16:20 | Claude Code | `docs/CODEX_PROMPTS.md`, `AGENTS.md`, `CLAUDE.md`, `TASKS.md`, `CONTEXT.md`, `docs/ARCHITECTURE.md`, `AI_USAGE.md` | Reordered the Codex prompts into rounds of two; Codex now lists its files in the PR and Claude logs them after the merge, so parallel PRs never conflict on the log files |
 
 ## Not built by AI
 
