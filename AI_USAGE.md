@@ -45,5 +45,20 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 23:30 | Claude Code | `server/src/relay.ts`, `web/src/relayUrl.ts`, `web/src/api.ts`, `web/src/useTape.ts`, `package.json`, `docs/DEPLOY.md`, `docs/SUBMISSION.md`, `docs/screenshots/*.png`, `AI_USAGE.md` | Hosted mode: the relay serves the built web app so one process on one port is the whole product, and the production build connects to its own host; root `npm start`; hosting steps (Render, tunnel fallback); draft text for every field of the ETHGlobal form for Aarit to edit |
 
 ## Not built by AI
+- **The idea and the PRD.** Wallet-Labeled Tape was my idea: Hyperliquid publishes both wallet
+  addresses on every trade, so a tape can show who traded, not just what traded. I wrote the PRD
+  before hacking started, including the tag rules and the honest-scope rules (no "smart money",
+  Pending instead of guessing, sample size on every tag). [Add where the idea came from: your own trading, your community.]
+- **Build order and the split.** I set the order (backend and infrastructure first) and split
+  the work between me, Claude and Codex. I approved the architecture before any code was written.
+- **Running and reviewing Codex.** I ran the Codex tasks (scoring math, position tracker) and
+  made the merge call on both PRs after review.
+- **The scope cut.** At 22:30 on Friday I cut the build to what could ship well by the deadline:
+  live tags, position actions, the account drawer and the flow panel. I dropped the forward
+  test, cohort freeze, replay and threshold tuning instead of shipping them half-done.
+- **Prizes.** I read the partner prizes and decided [none / EF CROPS].
+- **Deployment.** I set up and debugged the Render deployment that serves the live demo, and the
+  uptime monitor that keeps it scoring.
+- **Submission.** I recorded the demo video, wrote the final submission text and submitted.
 
 <!-- Written by Aarit. AI tools never write or edit this section. -->
