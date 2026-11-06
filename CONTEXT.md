@@ -76,8 +76,8 @@ the Hyperliquid API. Launching Claude from another folder: `npm run setup -- --c
 - UI for the drawer, flow cards and forward-test card is built (Claude) and waits for X05, X06 and
   X07 to serve data. Demo script draft `docs/DEMO.md`; prize shortlist `docs/PRIZES.md` waits on
   Aarit (A03).
-- Codex runs locally on the laptop and may work in `Documentswallet-labeled-tape` itself, so
-  Claude works in its own worktree (`Documentswallet-tape-claude`, branch `claude/ui-screens`,
+- Codex runs locally on the laptop and may work in `Documents/wallet-labeled-tape` itself, so
+  Claude works in its own worktree (`Documents/wallet-tape-claude`, branch `claude/ui-screens`,
   pushed with `git push origin claude/ui-screens:main`).
 - `config.scoring.fullCoverageDays` is 29 (coverage starts at the oldest fill, which always lands
   just after the window opens).

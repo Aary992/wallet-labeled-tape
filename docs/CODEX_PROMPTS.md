@@ -5,7 +5,7 @@ round own different files, so their pull requests do not conflict. Start a round
 round before it is merged. Claude reviews every PR; Aarit merges it.
 
 Each task works in its own git worktree on a branch cut from the latest `origin/main` (see
-`AGENTS.md` rule 6), never in the shared `Documentswallet-labeled-tape` folder: two tasks in one
+`AGENTS.md` rule 6), never in the shared `Documents/wallet-labeled-tape` folder: two tasks in one
 folder would overwrite each other. Codex never edits `TASKS.md`, `AI_USAGE.md` or `CONTEXT.md`: two PRs editing the same log
 lines would conflict. Codex lists every file it changed in the PR description instead, and Claude
 adds those rows to the logs right after the merge. Codex keeps `npm run typecheck`,

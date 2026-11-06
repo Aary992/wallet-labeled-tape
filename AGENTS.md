@@ -18,6 +18,6 @@ Instructions for Codex and any other coding agent working in this repo.
    charges `WeightBudget`. No new runtime dependencies unless the prompt allows it.
 6. Work in your own git worktree on a new branch cut from the latest `origin/main`
    (`git fetch origin` then `git worktree add <your scratch folder> -b codex/<task> origin/main`).
-   Never switch branches in `C:UsersAaruDocumentswallet-labeled-tape` or any folder you did
+   Never switch branches in `C:/Users/Aaru/Documents/wallet-labeled-tape` or any folder you did
    not create: another Codex task and Claude work on this machine at the same time.
 7. Open a PR and never merge it yourself.
