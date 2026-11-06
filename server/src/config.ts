@@ -48,8 +48,11 @@ export const config = {
     /** Below either of these: "Insufficient history", no performance tag. */
     minClosedPositions: 20,
     minCoverageDays: 7,
-    /** 7 to 29 days covered: "Partial history", tag shown with "covers N days". */
-    fullCoverageDays: 30,
+    /**
+     * 7 to 29 days covered: "Partial history", tag shown with "covers N days". 29, not 30: coverage
+     * starts at the oldest fill, which always lands just after the 30-day window opens.
+     */
+    fullCoverageDays: 29,
 
     profitable: {
       minNetPnlUsd: 0, // strictly greater than

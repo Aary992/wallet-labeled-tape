@@ -91,7 +91,7 @@ export interface AccountMetrics {
   /** Share of covered time with |position| under config flatNotionalUsd, 0 to 1. */
   flatShare: number;
   fillCount: number;
-  /** True when the 10,000 reachable fills ran out before the 30 day window did. */
+  /** True when the fill count reached the 10,000 reachable (config.fills.maxReachable). */
   hitFillCap: boolean;
   coverageStart: number;
   coverageDays: number;

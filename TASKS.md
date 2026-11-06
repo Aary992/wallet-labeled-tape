@@ -82,7 +82,7 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C17 | Second-machine setup: `npm run setup`, context files for Claude and Codex, line endings, clear port-in-use error | | | | ✅ Fri 11-06 03:04 |
 | C18 | Fixed the tape order: newest first by exchange time, not arrival order | | | | ✅ Fri 11-06 03:04 |
 | C19 | Infrastructure design (`docs/ARCHITECTURE.md`), Codex prompts split into parallel rounds, pinned interfaces, config and script names, this checksheet | 1 | A01 | Fri 16:30 | ✅ Fri 11-06 16:05 |
-| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | |
+| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | (doing) X01 (PR 2) and X02 (PR 1) reviewed 17:05: ready to merge |
 | C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:20 with empty states; finish check once X05 serves data |
 | C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:20; finish check once X06 broadcasts flow |
 | C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:20; README table once X07 reports |

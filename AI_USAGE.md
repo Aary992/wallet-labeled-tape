@@ -34,6 +34,7 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 16:20 | Claude Code | `web/src/App.tsx`, `web/src/Drawer.tsx`, `web/src/Panels.tsx`, `web/src/Tags.tsx`, `web/src/api.ts`, `web/src/format.ts`, `web/src/styles.css` | Account drawer with full metrics and positions, Profitable Account Flow cards, forward-test card with horizon tabs; built against the pinned API types with empty states until the backend endpoints land |
 | Fri 11-06 16:40 | Claude Code | `docs/RUNBOOK.md`, `docs/CODEX_PROMPTS.md`, `README.md`, `TASKS.md` | Demo-night runbook in plain steps for Aarit; X05 prompt fix so the cohort file name has no colons (invalid on Windows) |
 | Fri 11-06 16:50 | Claude Code | `docs/PRIZES.md`, `docs/DEMO.md`, `README.md`, `TASKS.md` | Partner-prize shortlist from the official ETHGlobal Mumbai prize list for Aarit to choose from; first draft of the 3-minute demo script |
+| Fri 11-06 17:05 | Claude Code | `server/src/config.ts`, `shared/protocol.ts`, `TASKS.md`, `AI_USAGE.md` | Reviewed X01 and X02 (merged together in a scratch copy: 54 tests pass; scored 6 live accounts with X01). Set fullCoverageDays to 29 so a full 30-day history counts as full; clarified the hitFillCap comment Codex flagged |
 
 ## Not built by AI
 
