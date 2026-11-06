@@ -1,5 +1,8 @@
 # Architecture
 
+> **Scope cut Fri 22:30:** only Round 1 (X01, X02) ran. Claude built a simpler scorer, positions
+> and flow directly; the forward test, freeze and replay were cut. README Status lists what shipped.
+
 How Wallet-Labeled Tape fits together, what is built, what is left, and the order it gets built
 in. Spec: `docs/PRD.md`. Who does what: `TASKS.md`. Codex prompts: `docs/CODEX_PROMPTS.md`.
 

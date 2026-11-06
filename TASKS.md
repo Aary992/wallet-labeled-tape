@@ -9,15 +9,17 @@ work goes in this file. How the parts fit: `docs/ARCHITECTURE.md`.
 
 ## Progress
 
+**Scope cut, Fri 22:30.** Aarit cut the build to a basic product for submission: live tags,
+position actions, account drawer and flow. The forward test, cohort freeze, replay and tuning
+were cut (marked "Cut" in the tables). Codex rounds 2 to 4 were not run; Claude wrote the rest of the backend.
+
 | # | Track | What "done" means | Tasks | Done |
 |:-|:-|:-|:-|:-|
-| 1 | Backend | Every account scored, every trade tagged with its action, flow and forward test computed | X01 to X07 | 2 of 7 |
-| 2 | Infrastructure | Demo laptop running all night, replay fallback recorded, cohort frozen and pushed, CI runs tests | A06, A07, A10, X04, C24 | 1 of 5 |
-| 3 | Frontend | Drawer, flow cards and forward-test card show real data | C21, C22, C23 | 0 of 3 |
-| 4 | Testing | PRs reviewed, accounts spot-checked, thresholds picked, forward test reported | C20, C25, A08, A09 | 0 of 4 |
-| 5 | Submission | Video, AI section, project submitted, demo rehearsed | A11 to A15, C26 | 0 of 6 |
-
-Mark a track done only when every task in it is done.
+| 1 | Backend | Accounts scored, tags and position actions on live trades, flow, account API | X01, X02, C27 | ✅ 3 of 3 |
+| 2 | Frontend | Tape with latest tags, drawer with real metrics, flow cards | C21, C22 | ✅ 2 of 2 |
+| 3 | Testing | Live run checked, 5 accounts spot-checked against the explorer | C28, A08 | 1 of 2 |
+| 4 | Infrastructure | Demo laptop scoring all night until judging | A06 | 0 of 1 |
+| 5 | Submission | Demo script, video, AI section, submitted, rehearsed | C26, A12 to A15 | 0 of 5 |
 
 ## Aarit
 
@@ -28,19 +30,20 @@ Product owner and release gate: nothing merges, freezes or ships without him.
 | A00 | Product idea and PRD | | | Thu 11-05 | ✅ Thu 11-05 (_Aarit adds detail_) |
 | A01 | Set the build order (backend and infrastructure first) and split the work three ways | | | Fri 16:00 | ✅ Fri 11-06 15:50 |
 | A02 | Approve the architecture in `docs/ARCHITECTURE.md` | 1 | C19 | Fri 16:30 | ✅ Fri 11-06 16:06 (went ahead with Round 1) |
-| A03 | Pick up to 3 partner prizes after reading each prize's rules (shortlist in `docs/PRIZES.md`) | 5 | | Fri 18:00 | |
-| A04 | Run Codex: paste the prompts from `docs/CODEX_PROMPTS.md` two at a time, round 1 now, the next round once the last one is merged | 1 | A02 | Fri 16:30 | (doing) Round 1 sent 16:06, done 16:12 |
-| A05 | Merge each Codex PR on GitHub once Claude's review says ready | 1 | C20 | per PR | (doing) Round 1: approved at 16:26, Claude pushed the merge 16:28 |
-| A06 | Demo laptop on duty: plugged in, sleep off, `npm run dev` running from X05's merge until judging | 2 | X05 | Fri 20:30 | |
-| A07 | Record a 2-minute replay on good WiFi: `npm run replay:record` | 2 | X04 | Sat 01:00 | |
-| A08 | Spot-check 5 scored accounts against the Hyperliquid website (PnL sign, size, activity) | 4 | X05 | Fri 22:15 | |
-| A09 | Pick the final tag thresholds from Claude's tuning report | 4 | C25 | Fri 22:15 | |
-| A10 | Freeze the cohort at T0: `npm run freeze`, then commit and push the cohort file | 2 | A08, A09 | Fri 22:30 | |
-| A11 | Pick the forward-test horizon that leads the pitch (15, 60 or 240 min) | 5 | X07 | Sat 06:30 | |
-| A12 | Record the backup demo video (3-minute script in `docs/PRD.md`) | 5 | C23 | Sat 07:00 | |
+| A03 | Pick up to 3 partner prizes after reading each prize's rules (shortlist in `docs/PRIZES.md`) | 5 | | Fri 18:00 | Optional now: each prize needs extra build work |
+| A04 | Run Codex: paste the prompts from `docs/CODEX_PROMPTS.md` two at a time, round 1 now, the next round once the last one is merged | 1 | A02 | Fri 16:30 | ✅ Round 1 sent 16:06, done 16:12; later rounds cut at 22:30 |
+| A05 | Merge each Codex PR on GitHub once Claude's review says ready | 1 | C20 | per PR | ✅ Round 1: approved at 16:26, Claude pushed the merge 16:28 |
+| A06 | Demo laptop on duty: plugged in, sleep off, `npm run dev` running until judging (`docs/RUNBOOK.md`) | 4 | C27 | Fri 23:00 | |
+| A07 | Record a 2-minute replay on good WiFi: `npm run replay:record` | 2 | X04 | Sat 01:00 | Cut 22:30 |
+| A08 | Spot-check 5 scored accounts against the Hyperliquid explorer (RUNBOOK section 3) | 3 | A06 | Sat 06:30 | |
+| A09 | Pick the final tag thresholds from Claude's tuning report | 4 | C25 | Fri 22:15 | Cut 22:30 |
+| A10 | Freeze the cohort at T0: `npm run freeze`, then commit and push the cohort file | 2 | A08, A09 | Fri 22:30 | Cut 22:30 |
+| A11 | Pick the forward-test horizon that leads the pitch (15, 60 or 240 min) | 5 | X07 | Sat 06:30 | Cut 22:30 |
+| A12 | Record the backup demo video (script in `docs/DEMO.md`) | 5 | C26 | Sat 07:00 | |
 | A13 | Write the "Not built by AI" section of `AI_USAGE.md` | 5 | | Sat 08:00 | |
 | A14 | Create the project on the ETHGlobal dashboard and submit: repo, video, partner prizes | 5 | A12 | Sat 08:30 | |
 | A15 | Rehearse the 3-minute demo | 5 | A12 | Sat 09:00 | |
+| A16 | Cut the scope to a basic product ready for submission | | | Fri 22:30 | ✅ Fri 11-06, decided about 22:30 |
 
 ## Codex
 
@@ -51,11 +54,11 @@ after another. Claude ticks these rows after each merge (Codex does not edit thi
 |:-|:-|:-|:-|:-|:-|:-|
 | X01 | Scoring math: round trips, metrics, tags, tests, `npm test` in CI | 1 | 1 | | Fri 18:30 | ✅ Fri 11-06 16:12 (PR #2, merged 16:28) |
 | X02 | Position tracker logic: open, add, reduce, close, flip | 1 | 1 | | Fri 18:30 | ✅ Fri 11-06 16:10 (PR #1, merged 16:28) |
-| X03 | Flow and forward-test math | 1 | 2 | | Fri 20:30 | |
-| X04 | Replay recorder and playback (venue WiFi fallback) | 2 | 4 | X06 | Sat 00:30 | |
-| X05 | Scorer loop, `/api/account/:address`, `npm run freeze`, `npm run preseed` | 1 | 2 | X01, X02 | Fri 20:30 | |
-| X06 | Live position actions, hourly reconcile, gap backfill, flow broadcast | 1 | 3 | X03, X05 | Fri 22:30 | |
-| X07 | Forward-test runner and `/api/forward-test` | 1 | 3 | X03, X05 | Fri 22:30 | |
+| X03 | Flow and forward-test math | 1 | 2 | | Fri 20:30 | Not run: replaced by C27 (Claude, simpler) |
+| X04 | Replay recorder and playback (venue WiFi fallback) | 2 | 4 | X06 | Sat 00:30 | Cut 22:30 |
+| X05 | Scorer loop, `/api/account/:address`, `npm run freeze`, `npm run preseed` | 1 | 2 | X01, X02 | Fri 20:30 | Not run: replaced by C27 (Claude, simpler) |
+| X06 | Live position actions, hourly reconcile, gap backfill, flow broadcast | 1 | 3 | X03, X05 | Fri 22:30 | Not run: replaced by C27 (Claude, simpler) |
+| X07 | Forward-test runner and `/api/forward-test` | 1 | 3 | X03, X05 | Fri 22:30 | Cut 22:30 |
 
 ## Claude
 
@@ -82,13 +85,15 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C17 | Second-machine setup: `npm run setup`, context files for Claude and Codex, line endings, clear port-in-use error | | | | ✅ Fri 11-06 03:04 |
 | C18 | Fixed the tape order: newest first by exchange time, not arrival order | | | | ✅ Fri 11-06 03:04 |
 | C19 | Infrastructure design (`docs/ARCHITECTURE.md`), Codex prompts split into parallel rounds, pinned interfaces, config and script names, this checksheet | 1 | A01 | Fri 16:30 | ✅ Fri 11-06 15:59 |
-| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 4 | each PR | per PR | (doing) X01 (PR 2) and X02 (PR 1) reviewed 16:24, merged 16:28 |
-| C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:16 with empty states; finish check once X05 serves data |
-| C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:16; finish check once X06 broadcasts flow |
-| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:16; README table once X07 reports |
-| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | ✅ Fri 11-06 16:17 (commands checked again after X05 lands) |
-| C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | |
-| C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | (doing) draft in `docs/DEMO.md` 16:20; numbers filled in Saturday |
+| C20 | Review every Codex PR against its prompt and the PRD; tell Aarit "ready to merge" or what to send back | 3 | each PR | per PR | ✅ X01 (PR 2) and X02 (PR 1) reviewed 16:24, merged 16:28 |
+| C21 | Drawer shows real metrics from `/api/account/:address` | 2 | C27 | Fri 21:30 | ✅ Fri 11-06 22:36 (checked live) |
+| C22 | Flow cards in the left panel | 2 | C27 | Sat 00:00 | ✅ Fri 11-06 22:36 (checked live) |
+| C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | Cut 22:30 |
+| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, recover | 4 | | Fri 21:00 | ✅ Fri 11-06 16:17, cut down to the basic build 22:37 |
+| C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | Cut 22:30 |
+| C26 | Final demo script and README pass | 5 | | Sat 07:00 | (doing) README status 22:37; demo script updated for the basic build |
+| C27 | Basic backend: scorer loop with early stop, live position actions, flow broadcast, `/api/account/:address`, warm restart, tests | 1 | X01, X02 | Fri 23:00 | ✅ Fri 11-06 22:36 |
+| C28 | Live run against Hyperliquid: accounts scored, tags and actions on the tape, drawer with real metrics, restart reloads scores | 3 | C27 | Fri 23:00 | ✅ Fri 11-06 22:35 |
 
 ## Partner prizes (after A03)
 

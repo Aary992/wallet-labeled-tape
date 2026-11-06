@@ -67,7 +67,17 @@ the Hyperliquid API. Launching Claude from another folder: `npm run setup -- --c
   warms up wherever the backend runs, so run it on the demo laptop for an hour before judging.
 - Only one backend per machine: a second copy stops with a "port is already taken" message.
 
-## CURRENT STATE (Fri 2026-11-06 16:30 IST)
+## CURRENT STATE (Fri 2026-11-06 22:40 IST)
+
+- **Scope cut at 22:30 (Aarit): basic product for submission.** Working end to end on live
+  Hyperliquid data: scorer loop (C27, on X01 and X02), tags and position actions on the tape,
+  account drawer with real metrics, flow cards, warm restart from SQLite. 60 tests.
+- Cut: forward test, cohort freeze, replay, tuning report, Codex rounds 2 to 4. README Status
+  says so.
+- Left for Aarit: run the backend all night on the demo laptop (`docs/RUNBOOK.md`), spot-check 5
+  accounts, record the video (`docs/DEMO.md`), write the "Not built by AI" section, submit.
+
+Before the cut (16:30):
 
 - **Round 1 done**: X01 (scoring math) and X02 (position tracker) merged 16:28, 54 tests, CI green.
   **Round 2 next**: X05 (scorer loop) and X03 (flow and forward-test math), prompts in

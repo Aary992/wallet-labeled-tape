@@ -1,5 +1,8 @@
 # Codex prompts
 
+> **Scope cut Fri 22:30:** only Round 1 (X01, X02) ran. Claude built a simpler scorer, positions
+> and flow directly; the forward test, freeze and replay were cut. README Status lists what shipped.
+
 Aarit pastes these into Codex, one Codex task per prompt, **two at a time**. The two prompts in a
 round own different files, so their pull requests do not conflict. Start a round only when the
 round before it is merged. Claude reviews every PR; Aarit merges it.
