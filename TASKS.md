@@ -12,7 +12,7 @@ work goes in this file. How the parts fit: `docs/ARCHITECTURE.md`.
 | # | Track | What "done" means | Tasks | Done |
 |:-|:-|:-|:-|:-|
 | 1 | Backend | Every account scored, every trade tagged with its action, flow and forward test computed | X01 to X07 | 0 of 7 |
-| 2 | Infrastructure | Demo laptop running all night, replay fallback recorded, cohort frozen and pushed, CI runs tests | A06, A07, A10, X04, C24 | 0 of 5 |
+| 2 | Infrastructure | Demo laptop running all night, replay fallback recorded, cohort frozen and pushed, CI runs tests | A06, A07, A10, X04, C24 | 1 of 5 |
 | 3 | Frontend | Drawer, flow cards and forward-test card show real data | C21, C22, C23 | 0 of 3 |
 | 4 | Testing | PRs reviewed, accounts spot-checked, thresholds picked, forward test reported | C20, C25, A08, A09 | 0 of 4 |
 | 5 | Submission | Video, AI section, project submitted, demo rehearsed | A11 to A15, C26 | 0 of 6 |
@@ -86,7 +86,7 @@ Architecture, UI, copy, PR reviews, analysis for Aarit's calls, demo material.
 | C21 | Drawer shows real metrics from `/api/account/:address` | 3 | X05 | Fri 21:30 | (doing) UI built 16:20 with empty states; finish check once X05 serves data |
 | C22 | Flow cards in the left panel | 3 | X06 | Sat 00:00 | (doing) UI built 16:20; finish check once X06 broadcasts flow |
 | C23 | Forward-test card in the app and the results table in the README | 3 | X07 | Sat 06:30 | (doing) card built 16:20; README table once X07 reports |
-| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | |
+| C24 | Demo-night runbook in plain words for Aarit (`docs/RUNBOOK.md`): start, check, freeze, recover | 2 | X05 | Fri 21:00 | ✅ Fri 11-06 16:40 (commands checked again after X05 lands) |
 | C25 | Tuning report: how scored accounts spread across each threshold, with options for Aarit to pick | 4 | 1.5 h of scoring | Fri 22:00 | |
 | C26 | Final demo script and README pass | 5 | X07 | Sat 07:00 | |
 

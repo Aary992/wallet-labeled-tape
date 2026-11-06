@@ -32,6 +32,7 @@ the same commit as the change. Who did each task is in `TASKS.md`.
 | Fri 11-06 16:05 | Claude Code | `TASKS.md`, `CONTEXT.md`, `AGENTS.md`, `README.md`, `server/src/scoring/README.md`, `AI_USAGE.md` | Rebuilt the task list as a 5-track tracker plus one checksheet each for Aarit, Codex and Claude; updated the context files to match |
 | Fri 11-06 16:20 | Claude Code | `docs/CODEX_PROMPTS.md`, `AGENTS.md`, `CLAUDE.md`, `TASKS.md`, `CONTEXT.md`, `docs/ARCHITECTURE.md`, `AI_USAGE.md` | Reordered the Codex prompts into rounds of two (X05 also stores the cohort sha256 for X07 to check); Codex now lists its files in the PR and Claude logs them after the merge, so parallel PRs never conflict on the log files |
 | Fri 11-06 16:20 | Claude Code | `web/src/App.tsx`, `web/src/Drawer.tsx`, `web/src/Panels.tsx`, `web/src/Tags.tsx`, `web/src/api.ts`, `web/src/format.ts`, `web/src/styles.css` | Account drawer with full metrics and positions, Profitable Account Flow cards, forward-test card with horizon tabs; built against the pinned API types with empty states until the backend endpoints land |
+| Fri 11-06 16:40 | Claude Code | `docs/RUNBOOK.md`, `docs/CODEX_PROMPTS.md`, `README.md`, `TASKS.md` | Demo-night runbook in plain steps for Aarit; X05 prompt fix so the cohort file name has no colons (invalid on Windows) |
 
 ## Not built by AI
 

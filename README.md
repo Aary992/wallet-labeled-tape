@@ -57,6 +57,7 @@ npm run probe
 | `web/src/` | Vite + React tape UI |
 | `docs/PRD.md` | The product spec |
 | `docs/ARCHITECTURE.md` | How the parts fit, the forward-test design, the build order |
+| `docs/RUNBOOK.md` | Demo-night steps: start, check, freeze, recover |
 | `TASKS.md` | Every task, who did it and what is next |
 | `AI_USAGE.md` | Where and how AI tools were used (ETHGlobal requirement) |
 | `CONTEXT.md`, `CLAUDE.md`, `AGENTS.md` | Working rules for the team and its AI tools |

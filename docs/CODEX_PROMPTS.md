@@ -177,7 +177,8 @@ server/src/hl/info.ts, server/src/fake.ts.
 4. relay.ts: GET /api/account/:address => AccountDetail (shared/protocol.ts), 404 for an address
    never seen. In fake mode return believable fake metrics so the UI can be built offline.
 5. freeze-cohort.ts (npm run freeze): insert every scored account's perf tag into cohorts with
-   one cohort_id (ISO minute) and frozen_at = now; write cohorts/<id>.json at the repo root
+   one cohort_id (ISO minute with no colons, e.g. 2026-11-06T22-30, so it is a valid Windows
+   file name) and frozen_at = now; write cohorts/<id>.json at the repo root
    (config.cohorts.dir, relative to server/) with address, tags, metrics and scored_at per
    account; store the sha256 of that file in the DB (a cohort_files table: cohort_id, path,
    sha256); print the file path, the account counts per perf tag and the sha256.
